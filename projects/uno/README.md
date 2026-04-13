@@ -2,6 +2,15 @@
 
 Versao simples de UNO para 2 jogadores, feita em HTML/CSS/JS, com conexao em tempo real via PeerJS (WebRTC).
 
+## Como testar
+
+- No GitHub Pages: abra a pagina do jogo e crie/entre na sala normalmente.
+- Em localhost/Docker: o jogo usa o servidor PeerJS local em `http://localhost:3000/peerjs`.
+
+## Observacao
+
+O jogo nao precisa de backend proprio para funcionar no GitHub Pages, mas depende de um servidor de sinalizacao. No deploy publico, ele usa o servidor publico do PeerJS; no ambiente local, usa o servidor do Docker.
+
 ## Como jogar
 
 1. Abra o arquivo `index.html` no navegador (de preferencia usando um servidor local).

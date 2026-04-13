@@ -1,9 +1,36 @@
 // ===== CONFIGURAÇÃO DE SOM =====
-const GAME_VERSION = "1.1.0";
+const GAME_VERSION = "1.2.0";
 const GAME_RELEASES = {
+  "1.2.0": "GitHub Pages com sinalizacao publica e suporte a teste local via Docker.",
   "1.1.0": "Color picker corrigido; cor escolhida para WILD/W4 agora é persistida corretamente.",
   "1.0.0": "Versao inicial do UNO pai e filho com sala por codigo."
 };
+
+function getPeerOptions() {
+  const hostname = window.location.hostname;
+  const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "0.0.0.0";
+
+  if (isLocalHost) {
+    return {
+      host: hostname,
+      port: Number(window.location.port) || 3000,
+      path: "/peerjs",
+      secure: window.location.protocol === "https:"
+    };
+  }
+
+  return {
+    host: "0.peerjs.com",
+    port: 443,
+    path: "/",
+    secure: true
+  };
+}
+
+function createPeer(id) {
+  const options = getPeerOptions();
+  return typeof id === "string" ? new Peer(id, options) : new Peer(options);
+}
 
 const soundManager = {
   enabled: localStorage.getItem('unoSoundEnabled') !== 'false',
@@ -643,7 +670,7 @@ ui.createRoomBtn.addEventListener("click", () => {
   app.roomCode = randomRoomCode();
   ui.connectionLabel.textContent = "Aguardando seu filho entrar...";
 
-  app.peer = new Peer(app.roomCode);
+  app.peer = createPeer(app.roomCode);
 
   app.peer.on("open", (id) => {
     setStatus(`Sala criada com sucesso. Codigo: ${id}`);
@@ -679,7 +706,7 @@ ui.joinRoomBtn.addEventListener("click", () => {
   app.myName = name;
   app.roomCode = roomCode;
 
-  app.peer = new Peer();
+  app.peer = createPeer();
 
   app.peer.on("open", () => {
     const conn = app.peer.connect(roomCode, { reliable: true });
