@@ -337,18 +337,18 @@ function applyCardEffect(state, card, chosenColor) {
   if (card.value === "W4") {
     const target = (state.turn + 1) % 2;
     drawCards(state, target, 4);
-    state.activeColor = chosenColor;
+    // activeColor já foi atualizado em hostPlayCard
     advanceTurn(state, 2);
     return;
   }
 
   if (card.value === "WILD") {
-    state.activeColor = chosenColor;
+    // activeColor já foi atualizado em hostPlayCard
     advanceTurn(state, 1);
     return;
   }
 
-  state.activeColor = card.color;
+  // Para cartas normais, activeColor já foi atualizado em hostPlayCard
   advanceTurn(state, 1);
 }
 
@@ -371,14 +371,25 @@ function hostPlayCard(playerIndex, cardId, chosenColor) {
     return;
   }
 
+  // Validação: WILD e W4 PRECISAM de cor escolhida
   if ((card.value === "WILD" || card.value === "W4") && !chosenColor) {
+    console.warn("WILD/W4 requer cor escolhida!");
+    return;
+  }
+
+  // Validação: cor escolhida deve ser válida
+  if (chosenColor && !["R", "G", "B", "Y"].includes(chosenColor)) {
+    console.warn("Cor inválida:", chosenColor);
     return;
   }
 
   hand.splice(idx, 1);
   state.discard.push(card);
 
-  if (card.value !== "WILD" && card.value !== "W4") {
+  // Atualizar activeColor ANTES de aplicar efeito da carta
+  if (card.value === "WILD" || card.value === "W4") {
+    state.activeColor = chosenColor;
+  } else {
     state.activeColor = card.color;
   }
 
@@ -739,6 +750,14 @@ ui.colorPicker.addEventListener("click", (event) => {
 
   const chosenColor = button.dataset.color;
   const cardId = app.waitingCardId;
+  
+  if (!chosenColor) {
+    console.error("Cor não foi definida no botão!");
+    return;
+  }
+  
+  console.log(`Cor escolhida: ${chosenColor} para carta ${cardId}`);
+  
   app.waitingCardId = null;
   ui.colorPicker.classList.add("hidden");
 
