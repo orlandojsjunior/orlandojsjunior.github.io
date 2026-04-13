@@ -20,7 +20,10 @@ function Write-Step {
 }
 
 Write-Host ''
-Write-Host '=== UNO ONLINE: INICIO DO PASSO A PASSO ===' -ForegroundColor Magenta
+Write-Host '============================================================' -ForegroundColor DarkMagenta
+Write-Host ' UNO ONLINE - INICIANDO O JOGO EM TEMPO REAL ' -ForegroundColor Magenta
+Write-Host '============================================================' -ForegroundColor DarkMagenta
+Write-Host ' Feche esta janela somente se quiser parar o jogo.' -ForegroundColor DarkGray
 Write-Host ''
 
 Write-Step 1 5 'Abrindo o projeto e preparando o ambiente...'
@@ -30,6 +33,7 @@ if ($LASTEXITCODE -ne 0) {
   Write-Host $composeOutput -ForegroundColor Red
   throw 'Falha ao iniciar os containers.'
 }
+Write-Host '      Servidor local iniciado com sucesso.' -ForegroundColor Green
 
 Write-Step 3 5 'Aguardando o túnel público do Cloudflare...'
 $publicUrl = $null
@@ -48,9 +52,11 @@ if (-not $publicUrl) {
   Write-Step 4 5 'Nao consegui detectar a URL pública automaticamente.' 'Yellow'
   Write-Step 5 5 'Abrindo o acesso local como fallback: http://localhost:8000/projects/uno/' 'Yellow'
   Start-Process 'http://localhost:8000/projects/uno/'
+  Write-Host '      Jogo aberto no navegador.' -ForegroundColor Green
   exit 0
 }
 
 Write-Step 4 5 "URL pública encontrada: $publicUrl" 'Green'
 Write-Step 5 5 'Abrindo o navegador agora...' 'Green'
 Start-Process $publicUrl
+Write-Host '      Jogo aberto no navegador.' -ForegroundColor Green
