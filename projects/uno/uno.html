@@ -15,8 +15,14 @@
 
   <main class="app">
     <header class="topbar">
-      <h1>UNO ONLINE</h1>
-      <p>Versao para 2 jogadores com codigo de sala</p>
+      <div>
+        <h1>UNO ONLINE</h1>
+        <p>Versao para 2 jogadores com codigo de sala</p>
+      </div>
+      <div class="topbar-controls">
+        <button id="toggleSound" class="toggle-btn" title="Alternar som">🔊</button>
+        <button id="toggleDarkMode" class="toggle-btn" title="Modo escuro">🌙</button>
+      </div>
     </header>
 
     <section id="lobby" class="panel">
@@ -52,6 +58,7 @@
           Sala: <strong id="roomCode">-</strong>
         </div>
         <div id="connectionLabel">Conectando...</div>
+        <div id="scoreDisplay" class="score-display"></div>
       </div>
 
       <div class="board">

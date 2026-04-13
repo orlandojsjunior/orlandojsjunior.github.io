@@ -1,3 +1,141 @@
+// ===== CONFIGURAÇÃO DE SOM =====
+const soundManager = {
+  enabled: localStorage.getItem('unoSoundEnabled') !== 'false',
+  
+  playSound(type) {
+    if (!this.enabled) return;
+    
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    const now = audioContext.currentTime;
+    
+    switch(type) {
+      case 'play':
+        oscillator.frequency.value = 800;
+        gainNode.gain.setValueAtTime(0.2, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        oscillator.start(now);
+        oscillator.stop(now + 0.15);
+        break;
+      case 'draw':
+        oscillator.frequency.value = 600;
+        gainNode.gain.setValueAtTime(0.15, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        oscillator.start(now);
+        oscillator.stop(now + 0.1);
+        break;
+      case 'uno':
+        oscillator.frequency.value = 1200;
+        gainNode.gain.setValueAtTime(0.3, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        oscillator.start(now);
+        oscillator.stop(now + 0.3);
+        break;
+      case 'win':
+        for (let i = 0; i < 3; i++) {
+          const freqs = [800, 1000, 1200];
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          osc.frequency.value = freqs[i];
+          gain.gain.setValueAtTime(0.2, now + i * 0.2);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.2 + 0.3);
+          osc.start(now + i * 0.2);
+          osc.stop(now + i * 0.2 + 0.3);
+        }
+        break;
+    }
+  }
+};
+
+// ===== CONFIGURAÇÃO DE DARK MODE =====
+const themeManager = {
+  isDark: localStorage.getItem('unoDarkMode') === 'true',
+  
+  init() {
+    if (this.isDark) {
+      document.body.classList.add('dark-mode');
+      document.getElementById('toggleDarkMode').textContent = '☀️';
+    }
+  },
+  
+  toggle() {
+    this.isDark = !this.isDark;
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('unoDarkMode', this.isDark);
+    document.getElementById('toggleDarkMode').textContent = this.isDark ? '☀️' : '🌙';
+  }
+};
+
+// ===== RASTREAMENTO DE PONTOS =====
+const scoreTracker = {
+  scores: JSON.parse(localStorage.getItem('unoScores')) || {},
+  
+  getScore(playerName) {
+    return this.scores[playerName] || 0;
+  },
+  
+  addScore(playerName, points) {
+    this.scores[playerName] = (this.scores[playerName] || 0) + points;
+    localStorage.setItem('unoScores', JSON.stringify(this.scores));
+  },
+  
+  getDisplay(p1Name, p2Name) {
+    const p1Score = this.getScore(p1Name);
+    const p2Score = this.getScore(p2Name);
+    return `📊 ${p1Name}: ${p1Score} | ${p2Name}: ${p2Score}`;
+  },
+  
+  reset() {
+    this.scores = {};
+    localStorage.removeItem('unoScores');
+  }
+};
+
+// ===== TIMER DE TURNO =====
+const turnTimer = {
+  maxTime: 30,
+  remainingTime: 30,
+  interval: null,
+  
+  start(callback) {
+    this.remainingTime = this.maxTime;
+    this.updateDisplay();
+    
+    this.interval = setInterval(() => {
+      this.remainingTime--;
+      this.updateDisplay();
+      
+      if (this.remainingTime <= 0) {
+        this.stop();
+        callback();
+      }
+    }, 1000);
+  },
+  
+  stop() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+  },
+  
+  updateDisplay() {
+    const timerEl = document.getElementById('turnTimer');
+    if (timerEl) {
+      timerEl.textContent = String(this.remainingTime);
+      timerEl.classList.toggle('warning', this.remainingTime <= 5);
+    }
+  }
+};
+
+// ===== CÓDIGO ORIGINAL (LIGEIRAMENTE MODIFICADO) =====
 const COLORS = ["R", "G", "B", "Y"];
 const VALUE_LABEL = {
   SKIP: "PULA",
@@ -29,7 +167,10 @@ const ui = {
   activeColor: document.getElementById("activeColor"),
   turnLabel: document.getElementById("turnLabel"),
   log: document.getElementById("log"),
-  colorPicker: document.getElementById("colorPicker")
+  colorPicker: document.getElementById("colorPicker"),
+  scoreDisplay: document.getElementById("scoreDisplay"),
+  toggleSound: document.getElementById("toggleSound"),
+  toggleDarkMode: document.getElementById("toggleDarkMode")
 };
 
 const app = {
@@ -248,9 +389,12 @@ function hostPlayCard(playerIndex, cardId, chosenColor) {
 
   if (hand.length === 0) {
     state.winner = playerIndex;
-    state.lastAction = `${state.players[playerIndex].name} venceu a partida.`;
+    state.lastAction = `${state.players[playerIndex].name} venceu a partida!`;
+    soundManager.playSound('win');
+    updateScoreDisplay();
   }
 
+  soundManager.playSound('play');
   broadcastState();
 }
 
@@ -264,6 +408,7 @@ function hostDrawOne(playerIndex) {
   state.saidUno[playerIndex] = false;
   state.lastAction = `${state.players[playerIndex].name} comprou 1 carta.`;
   advanceTurn(state, 1);
+  soundManager.playSound('draw');
   broadcastState();
 }
 
@@ -275,7 +420,8 @@ function hostCallUno(playerIndex) {
 
   if (state.players[playerIndex].hand.length === 2) {
     state.saidUno[playerIndex] = true;
-    state.lastAction = `${state.players[playerIndex].name} gritou UNO.`;
+    state.lastAction = `${state.players[playerIndex].name} gritou UNO!`;
+    soundManager.playSound('uno');
     broadcastState();
   }
 }
@@ -300,6 +446,12 @@ function backCardHtml() {
   `;
 }
 
+function updateScoreDisplay() {
+  const p1Name = app.viewState.players[0].name;
+  const p2Name = app.viewState.players[1].name;
+  ui.scoreDisplay.textContent = scoreTracker.getDisplay(p1Name, p2Name);
+}
+
 function render() {
   const state = app.viewState;
   if (!state) {
@@ -316,10 +468,24 @@ function render() {
   ui.activeColor.textContent = `Cor ativa: ${colorName(state.activeColor)}`;
 
   const isMyTurn = state.turn === app.myIndex;
+  
   if (state.winner !== null) {
-    ui.turnLabel.textContent = `Fim de jogo: ${state.players[state.winner].name} venceu.`;
+    ui.turnLabel.innerHTML = `Fim de jogo: <strong>${state.players[state.winner].name}</strong> venceu!`;
+    turnTimer.stop();
   } else {
-    ui.turnLabel.textContent = isMyTurn ? "Sua vez" : "Vez do adversario";
+    if (isMyTurn) {
+      ui.turnLabel.innerHTML = `Sua vez <span id="turnTimer" class="turn-timer">30</span>`;
+      turnTimer.start(() => {
+        if (app.isHost) {
+          hostDrawOne(app.myIndex);
+        } else {
+          send({ type: "action", action: "draw", playerIndex: app.myIndex });
+        }
+      });
+    } else {
+      ui.turnLabel.textContent = "Vez do adversario...";
+      turnTimer.stop();
+    }
   }
 
   const myHand = state.players[app.myIndex].hand;
@@ -332,6 +498,8 @@ function render() {
 
   ui.drawBtn.disabled = !isMyTurn || state.winner !== null;
   ui.unoBtn.disabled = !isMyTurn || state.winner !== null || myHand.length !== 2;
+
+  updateScoreDisplay();
 
   if (state.lastAction) {
     addLog(state.lastAction);
@@ -355,7 +523,7 @@ function startGameView() {
   ui.lobby.classList.add("hidden");
   ui.game.classList.remove("hidden");
   ui.roomCode.textContent = app.roomCode;
-  ui.connectionLabel.textContent = "Conectado";
+  ui.connectionLabel.textContent = "Conectado ✓";
 }
 
 function handleAction(msg) {
@@ -387,7 +555,7 @@ function setupConn(conn) {
       startGameView();
     }
 
-    ui.connectionLabel.textContent = "Conectado";
+    ui.connectionLabel.textContent = "Conectado ✓";
   });
 
   conn.on("data", (data) => {
@@ -415,12 +583,13 @@ function setupConn(conn) {
   });
 
   conn.on("close", () => {
-    ui.connectionLabel.textContent = "Conexao encerrada";
+    ui.connectionLabel.textContent = "Conexao encerrada ✗";
     addLog("Conexao foi encerrada.");
+    turnTimer.stop();
   });
 
   conn.on("error", () => {
-    ui.connectionLabel.textContent = "Erro de conexao";
+    ui.connectionLabel.textContent = "Erro de conexao ⚠";
     addLog("Erro na conexao entre os jogadores.");
   });
 }
@@ -576,4 +745,26 @@ ui.colorPicker.addEventListener("click", (event) => {
       chosenColor
     });
   }
+});
+
+// ===== INICIALIZAÇÃO =====
+document.addEventListener('DOMContentLoaded', () => {
+  themeManager.init();
+  updateScoreDisplay();
+  
+  ui.toggleSound.addEventListener('click', () => {
+    soundManager.enabled = !soundManager.enabled;
+    localStorage.setItem('unoSoundEnabled', soundManager.enabled);
+    ui.toggleSound.textContent = soundManager.enabled ? '🔊' : '🔇';
+    soundManager.playSound('play');
+  });
+  
+  ui.toggleDarkMode.addEventListener('click', () => {
+    themeManager.toggle();
+  });
+  
+  // Resetar timer ao sair
+  window.addEventListener('beforeunload', () => {
+    turnTimer.stop();
+  });
 });
