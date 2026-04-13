@@ -1,7 +1,973 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta
+		name="description"
+		content="Site pessoal e portifolio de Orlando Junior, com projetos, presenca online e informacoes profissionais."
+	>
+	<title>Orlando Junior | Site Pessoal</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;700;800&display=swap"
+		rel="stylesheet"
+	>
+
+	<style>
+		:root {
+			--bg: #0c1018;
+			--bg-soft: #111827;
+			--surface: rgba(17, 24, 39, 0.65);
+			--text: #f3f6fb;
+			--muted: #b6c2d6;
+			--line: rgba(255, 255, 255, 0.15);
+			--primary: #27d26f;
+			--secondary: #00b4d8;
+			--accent: #fbbf24;
+			--radius: 18px;
+			--shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+			--max: 1120px;
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body {
+			min-height: 100%;
+		}
+
+		body {
+			font-family: "Manrope", sans-serif;
+			color: var(--text);
+			background:
+				radial-gradient(circle at 10% 10%, rgba(39, 210, 111, 0.18), transparent 40%),
+				radial-gradient(circle at 90% 12%, rgba(0, 180, 216, 0.22), transparent 42%),
+				linear-gradient(180deg, #070b12 0%, #0d1422 52%, #0b1018 100%);
+			line-height: 1.6;
+			overflow-x: hidden;
+		}
+
+		.grid-overlay {
+			position: fixed;
+			inset: 0;
+			background-image:
+				linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+			background-size: 36px 36px;
+			mask-image: radial-gradient(circle at center, black 55%, transparent 92%);
+			pointer-events: none;
+			z-index: 0;
+		}
+
+		.container {
+			width: min(92%, var(--max));
+			margin: 0 auto;
+			position: relative;
+			z-index: 1;
+		}
+
+		header {
+			padding: 28px 0;
+			position: sticky;
+			top: 0;
+			z-index: 20;
+			backdrop-filter: blur(8px);
+			background: rgba(7, 11, 18, 0.45);
+			border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		}
+
+		nav {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 20px;
+		}
+
+		.logo {
+			font-family: "Bebas Neue", sans-serif;
+			letter-spacing: 0.1em;
+			font-size: 1.8rem;
+			color: var(--text);
+			text-decoration: none;
+		}
+
+		.logo span {
+			color: var(--primary);
+		}
+
+		.nav-links {
+			display: flex;
+			gap: 14px;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+		}
+
+		.nav-links a {
+			text-decoration: none;
+			color: var(--muted);
+			padding: 8px 12px;
+			border-radius: 999px;
+			transition: 0.25s ease;
+			border: 1px solid transparent;
+			font-weight: 600;
+			font-size: 0.92rem;
+		}
+
+		.nav-links a:hover {
+			color: var(--text);
+			border-color: rgba(255, 255, 255, 0.2);
+			background: rgba(255, 255, 255, 0.04);
+		}
+
+		main {
+			padding: 30px 0 80px;
+			display: grid;
+			gap: 74px;
+		}
+
+		.hero {
+			display: grid;
+			gap: 24px;
+			padding: 50px 34px;
+			border: 1px solid var(--line);
+			border-radius: calc(var(--radius) + 6px);
+			background: linear-gradient(120deg, rgba(39, 210, 111, 0.14), rgba(0, 180, 216, 0.08));
+			box-shadow: var(--shadow);
+			animation: reveal 900ms ease both;
+		}
+
+		.tag {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			width: fit-content;
+			background: rgba(255, 255, 255, 0.08);
+			border: 1px solid rgba(255, 255, 255, 0.18);
+			color: #e7f5ef;
+			padding: 8px 14px;
+			border-radius: 999px;
+			font-weight: 700;
+			font-size: 0.85rem;
+			letter-spacing: 0.02em;
+		}
+
+		h1 {
+			font-family: "Bebas Neue", sans-serif;
+			letter-spacing: 0.03em;
+			line-height: 0.95;
+			font-size: clamp(2.9rem, 11vw, 5.9rem);
+			max-width: 14ch;
+		}
+
+		.hero p {
+			max-width: 64ch;
+			color: #d7e0ee;
+			font-size: clamp(1rem, 2.6vw, 1.14rem);
+		}
+
+		.hero-actions {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+
+		.btn {
+			text-decoration: none;
+			font-weight: 800;
+			border-radius: 12px;
+			padding: 12px 18px;
+			border: 1px solid transparent;
+			transition: transform 0.2s ease, filter 0.2s ease;
+		}
+
+		.btn-primary {
+			color: #072010;
+			background: linear-gradient(120deg, #39e984, #18c0df);
+		}
+
+		.btn-secondary {
+			color: var(--text);
+			border-color: rgba(255, 255, 255, 0.25);
+			background: rgba(255, 255, 255, 0.06);
+		}
+
+		.btn:hover {
+			transform: translateY(-2px);
+			filter: brightness(1.07);
+		}
+
+		section {
+			display: grid;
+			gap: 18px;
+		}
+
+		h2 {
+			font-family: "Bebas Neue", sans-serif;
+			font-size: clamp(1.8rem, 6vw, 2.6rem);
+			letter-spacing: 0.06em;
+			color: #f4f8ff;
+		}
+
+		.section-intro {
+			color: var(--muted);
+			max-width: 70ch;
+		}
+
+		.about-grid {
+			display: grid;
+			grid-template-columns: minmax(240px, 300px) 1fr;
+			gap: 20px;
+		}
+
+		.profile-card {
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+			background: linear-gradient(150deg, rgba(39, 210, 111, 0.14), rgba(0, 180, 216, 0.07));
+			padding: 22px;
+			display: grid;
+			gap: 12px;
+			align-content: start;
+		}
+
+		.avatar {
+			width: 88px;
+			height: 88px;
+			border-radius: 18px;
+			display: grid;
+			place-items: center;
+			font-family: "Bebas Neue", sans-serif;
+			font-size: 2.1rem;
+			letter-spacing: 0.08em;
+			color: #03270f;
+			background: linear-gradient(135deg, #41e68a, #21b8df);
+			box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+		}
+
+		.profile-card h3 {
+			font-size: 1.2rem;
+		}
+
+		.profile-card p {
+			font-size: 0.95rem;
+			color: #d7e0ee;
+		}
+
+		.about-content {
+			display: grid;
+			gap: 14px;
+		}
+
+		.about-highlight {
+			display: grid;
+			gap: 8px;
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			padding: 15px;
+			background: rgba(255, 255, 255, 0.02);
+		}
+
+		.about-highlight strong {
+			font-size: 1rem;
+			color: #f0f6ff;
+		}
+
+		.about-highlight p {
+			color: var(--muted);
+			font-size: 0.95rem;
+		}
+
+		.cards {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+			gap: 16px;
+		}
+
+		.card {
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+			background: var(--surface);
+			padding: 20px;
+			display: grid;
+			gap: 8px;
+			transform: translateY(8px);
+			opacity: 0;
+			animation: reveal 700ms ease forwards;
+		}
+
+		.card:nth-child(2) {
+			animation-delay: 110ms;
+		}
+
+		.card:nth-child(3) {
+			animation-delay: 220ms;
+		}
+
+		.card:nth-child(4) {
+			animation-delay: 330ms;
+		}
+
+		.card small {
+			color: #8fb5ff;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			font-weight: 700;
+			font-size: 0.72rem;
+		}
+
+		.card h3 {
+			font-size: 1.15rem;
+			line-height: 1.2;
+		}
+
+		.card p {
+			color: var(--muted);
+			font-size: 0.95rem;
+		}
+
+		.evidence {
+			margin-top: 4px;
+			padding: 8px 10px;
+			border-radius: 10px;
+			border: 1px dashed rgba(39, 210, 111, 0.45);
+			background: rgba(39, 210, 111, 0.08);
+			color: #dfffea;
+			font-size: 0.88rem;
+			font-weight: 700;
+		}
+
+		.card a {
+			width: fit-content;
+			text-decoration: none;
+			color: var(--accent);
+			font-weight: 800;
+			margin-top: 4px;
+		}
+
+		.projects {
+			display: grid;
+			gap: 14px;
+		}
+
+		.project {
+			border: 1px solid rgba(255, 255, 255, 0.13);
+			border-left: 4px solid var(--primary);
+			border-radius: 14px;
+			padding: 18px;
+			background: rgba(13, 20, 34, 0.84);
+			display: grid;
+			gap: 10px;
+		}
+
+		.project h3 {
+			font-size: 1.08rem;
+		}
+
+		.project p {
+			color: var(--muted);
+			font-size: 0.96rem;
+		}
+
+		.project a {
+			text-decoration: none;
+			font-weight: 700;
+			color: #67e8f9;
+			width: fit-content;
+		}
+
+		.cert-list {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+			gap: 14px;
+		}
+
+		.cert-item {
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			border-radius: 14px;
+			padding: 18px;
+			background: rgba(13, 20, 34, 0.84);
+			display: grid;
+			gap: 8px;
+		}
+
+		.cert-badge {
+			width: 84px;
+			height: 84px;
+			border-radius: 12px;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			background: rgba(255, 255, 255, 0.05);
+			object-fit: cover;
+		}
+
+		.cert-item small {
+			color: #8fb5ff;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			font-size: 0.72rem;
+			font-weight: 700;
+		}
+
+		.cert-item h3 {
+			font-size: 1.03rem;
+			line-height: 1.3;
+		}
+
+		.cert-item p {
+			font-size: 0.94rem;
+			color: var(--muted);
+		}
+
+		.timeline {
+			display: grid;
+			gap: 14px;
+		}
+
+		.timeline-item {
+			padding: 18px;
+			border-radius: 14px;
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			background: rgba(13, 20, 34, 0.84);
+			display: grid;
+			gap: 6px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.timeline-item::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 4px;
+			height: 100%;
+			background: linear-gradient(180deg, var(--primary), var(--secondary));
+		}
+
+		.timeline-item small {
+			color: #8fb5ff;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			font-size: 0.72rem;
+			font-weight: 700;
+		}
+
+		.timeline-item h3 {
+			font-size: 1.05rem;
+		}
+
+		.timeline-item p {
+			color: var(--muted);
+			font-size: 0.94rem;
+		}
+
+		.skills-board {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 14px;
+		}
+
+		.skill-group {
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			padding: 16px;
+			background: rgba(255, 255, 255, 0.03);
+			display: grid;
+			gap: 10px;
+		}
+
+		.skill-group h3 {
+			font-size: 1.02rem;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+
+		.chip {
+			font-size: 0.82rem;
+			font-weight: 700;
+			padding: 7px 10px;
+			border-radius: 999px;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			background: rgba(255, 255, 255, 0.05);
+			color: #dfe8f8;
+		}
+
+		.chip.verified {
+			border-color: rgba(39, 210, 111, 0.65);
+			background: rgba(39, 210, 111, 0.18);
+			color: #e8fff1;
+		}
+
+		.chip.verified::before {
+			content: "✓ ";
+			font-weight: 800;
+		}
+
+		footer {
+			margin-top: 40px;
+			color: #9aacbf;
+			font-size: 0.9rem;
+			text-align: center;
+		}
+
+		@keyframes reveal {
+			from {
+				transform: translateY(18px);
+				opacity: 0;
+			}
+
+			to {
+				transform: translateY(0);
+				opacity: 1;
+			}
+		}
+
+		@media (max-width: 780px) {
+			header {
+				position: static;
+			}
+
+			nav {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.hero {
+				padding: 34px 22px;
+			}
+
+			.about-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+	<div class="grid-overlay" aria-hidden="true"></div>
+
+	<header>
+		<div class="container">
+			<nav aria-label="Navegacao principal">
+				<a class="logo" href="#inicio">ORLANDO<span>.</span>JR</a>
+				<div class="nav-links">
+					<a href="#sobre">Sobre</a>
+					<a href="#graduacao">Graduacao</a>
+					<a href="#posgraduacao">Pos-graduacao</a>
+					<a href="#certificacoes">Certificacoes Internacionais</a>
+					<a href="#habilidades">Habilidades</a>
+					<a href="#timeline">Timeline</a>
+					<a href="#portfolio">Portfolio</a>
+					<a href="#presenca">Presenca online</a>
+				</div>
+			</nav>
+		</div>
+	</header>
+
+	<main class="container">
+		<section class="hero" id="inicio">
+			<span class="tag">Especialista Cloud | 2x AWS Certified | Azure | IA | Python | SQL</span>
+			<h1>ORLANDO JUNIOR</h1>
+			<p>
+				Profissional de tecnologia com base solida em infraestrutura, cloud computing e desenvolvimento,
+				com foco em transformar desafios reais em solucoes digitais escalaveis e eficientes.
+			</p>
+			<div class="hero-actions">
+				<a class="btn btn-primary" href="https://github.com/orlandojsjunior" target="_blank" rel="noopener noreferrer">Ver GitHub</a>
+				<a class="btn btn-secondary" href="https://www.linkedin.com/in/orlandojsjunior/" target="_blank" rel="noopener noreferrer">Conectar no LinkedIn</a>
+			</div>
+		</section>
+
+		<section id="sobre">
+			<h2>Sobre Mim</h2>
+			<div class="about-grid">
+				<article class="profile-card">
+					<div class="avatar" aria-hidden="true">OJ</div>
+					<h3>Orlando Junior</h3>
+					<p>
+						<strong>Pós-graduando em Cloud Computing com Inteligência Artificial</strong> pela XP Educação.
+					</p>
+					<p>
+						Possuo trajetória consolidada de mais de 17 anos na área de tecnologia,
+						com ampla experiência em gerenciamento de infraestrutura de TI, redes de computadores e suporte ao cliente.
+					</p>
+				</article>
+
+				<div class="about-content">
+					<p class="section-intro">
+						Essa base sólida me permite trazer uma perspectiva estratégica para projetos de Cloud Computing.
+						Aliadas às minhas certificações recentes e especializações, essa experiência me prepara para
+						implementar soluções que impulsionam inovação e eficiência.
+					</p>
+					<div class="about-highlight">
+						<strong>Especialização Recente</strong>
+						<p>
+							Recentemente, concluí o programa AWS re/Start e conquistei a certificação AWS Cloud Practitioner.
+							Especializado em implementação de estratégias de migração para a nuvem, com foco na redução de custos
+							e no aumento de desempenho.
+						</p>
+					</div>
+					<div class="about-highlight">
+						<strong>Objetivo Profissional</strong>
+						<p>
+							Estou migrando para a área de Cloud Computing, buscando posições como Analista de Cloud Jr.,
+							onde possa aplicar meus conhecimentos e contribuir significativamente para projetos inovadores
+							e desafiadores, sempre focado em entregar resultados impactantes.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="graduacao">
+			<h2>Graduacao</h2>
+			<p class="section-intro">
+				Formação académica concluída que sustenta minha atuação técnica em desenvolvimento de sistemas,
+				infraestrutura e operações de TI.
+			</p>
+			<div class="cards">
+				<article class="card">
+					<small>Graduação Universitária</small>
+					<h3>Análise e Desenvolvimento de Sistemas</h3>
+					<p>
+						<strong>Centro Universitário Maurício de Nassau - UNINASSAU</strong><br>
+						Período: 03/2023 até 12/2024
+					</p>
+					<p>
+						Formação completa em análise, design e desenvolvimento de sistemas de informação,
+						com base teórica e prática para atuação em tecnologia, infraestrutura e operações de TI.
+					</p>
+					<p class="evidence">✓ Curso concluído com sucesso</p>
+				</article>
+				<article class="card">
+					<small>Formação Técnica</small>
+					<h3>Técnico em Informática e Redes</h3>
+					<p>
+						<strong>InforQuality</strong> - 2005
+					</p>
+					<p>
+						Formação técnica fundamental em redes de computadores, administração de sistemas
+						e infraestrutura, base para minha trajetória profissional.
+					</p>
+					<p class="evidence">✓ Certificação técnica válida</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="posgraduacao">
+			<h2>Pos-graduacao</h2>
+			<p class="section-intro">
+				Especializacao em andamento com foco em cloud computing e inteligencia artificial.
+			</p>
+			<div class="cards">
+				<article class="card">
+					<small>Pos-graduacao - Modulo com diploma/certificado</small>
+					<h3>Cloud Computing com Inteligencia Artificial - XP Educacao (em andamento)</h3>
+					<p>
+						Pos-graduando com foco em arquitetura cloud, automacao e aplicacoes de IA.
+						Um modulo ja concluido possui certificacao com validacao publica.
+					</p>
+					<p class="evidence">Codigo de validacao do modulo concluido: 02deea7d90940c7bf643c3a496e875c3.</p>
+					<a href="https://certificados.xpeducacao.com.br/" target="_blank" rel="noopener noreferrer">Validar modulo concluido</a>
+				</article>
+				<article class="card">
+					<small>Formacao Complementar - Alura</small>
+					<h3>Certificado Completo (25/03/2024 a 19/12/2024)</h3>
+					<p>
+						Consolidacao de estudos com foco em habilidades praticas para dados e desenvolvimento:
+						Data Science (128h), SQL (34h), Programacao (8h), Imersao Data Science (5h)
+						e Inovacao e Gestao (20h).
+					</p>
+					<a href="https://cursos.alura.com.br/user/orlandojsjunior/fullCertificate/33949799903760cf950ba9b04c3c0cda" target="_blank" rel="noopener noreferrer">Ver certificado completo</a>
+				</article>
+			</div>
+		</section>
+
+		<section id="certificacoes">
+			<h2>Certificacoes de Nivel Internacional</h2>
+			<p class="section-intro">
+					Certificacoes internacionais com validacao publica, emitidas por Amazon Web Services.
+					<strong>Nota:</strong> Combinam formacao pratica em desenvolvimento de habilidades (AWS re/Start) com certificacao oficial validada
+					(AWS Certified Cloud Practitioner - Nivel Fundamental), demonstrando fluencia em nuvem AWS.
+			</p>
+			<div class="cert-list">
+				<article class="cert-item">
+					<img
+						class="cert-badge"
+						src="https://images.credly.com/images/44e2c252-5d19-4574-9646-005f7225bf53/image.png"
+						alt="Badge AWS re/Start Graduate"
+					>
+					<small>Amazon Web Services Training & Certification</small>
+					<h3>AWS re/Start Graduate</h3>
+					<p>
+						<strong>Programa de Desenvolvimento de Habilidades:</strong> Conclusao de rigorosos cursos de Fundamentos de TI, AWS Cloud e
+						treinamento profissional. O programa inclui aprendizado baseado em cenarios reais do mundo, laboratorios praticos e disciplinas,
+						apoiado por mentores profissionais e treinadores credenciados.
+					</p>
+					<p><small>🎓 <strong>Emissao:</strong> 26 de maio de 2025 | <strong>Skills validadas:</strong> AWS Cloud Computing, Cloud Platform, Cloud Services, Computacao em Nuvem AWS, Serviços Web da Amazon</small></p>
+					<a href="https://www.credly.com/badges/3468e8d0-96dd-4481-9557-a1c66ddda3fb" target="_blank" rel="noopener noreferrer">Ver credencial no Credly</a>
+				</article>
+
+				<article class="cert-item">
+					<img
+						class="cert-badge"
+						src="https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png"
+						alt="Badge AWS Certified Cloud Practitioner"
+					>
+					<small>Amazon Web Services Training & Certification</small>
+					<h3>AWS Certified Cloud Practitioner</h3>
+					<p>
+						<strong>Nível Fundamental:</strong> Entendimento fundamental dos serviços de TI e seus usos na AWS Cloud.
+						Demonstra fluencia em nuvem e conhecimentos fundamentais de AWS, com capacidade de identificar
+						en serviços essenciais necessarios para configurar projetos focados em AWS.
+					</p>
+					<p><small>📜 <strong>Emissao:</strong> 20 de marco de 2025 | <strong>Validade:</strong> ate 20 de marco de 2028 | <strong>Skills validadas:</strong> AWS, Certificacao AWS, AWS Cloud, Certificacao em Nuvem, Computacao em Nuvem, Plataforma em Nuvem, Serviços em Nuvem</small></p>
+					<a href="https://www.credly.com/badges/6fb0284c-1c5b-4c45-9d11-1a8d0a807e51" target="_blank" rel="noopener noreferrer">Ver credencial no Credly</a>
+				</article>
+			</div>
+		</section>
+
+		<section id="habilidades">
+			<h2>Habilidades Técnicas</h2>
+			<p class="section-intro">
+				Competências técnicas consolidadas através de experiência profissional, certificações internacionais
+				e formações contínuas em cloud computing, dados e desenvolvimento.
+			</p>
+			<div class="skills-board">
+				<article class="skill-group">
+					<h3>Cloud Computing & AWS</h3>
+					<div class="chips">
+						<span class="chip verified">Cloud Computing</span>
+						<span class="chip verified">AWS</span>
+						<span class="chip verified">Amazon Web Services</span>
+						<span class="chip">Azure</span>
+						<span class="chip">Segurança em Cloud</span>
+						<span class="chip">Arquitetura de Software</span>
+					</div>
+				</article>
+
+				<article class="skill-group">
+					<h3>Desenvolvimento & Dados</h3>
+					<div class="chips">
+						<span class="chip verified">Python</span>
+						<span class="chip verified">SQL</span>
+						<span class="chip">NoSQL</span>
+						<span class="chip verified">Pandas</span>
+						<span class="chip verified">NumPy</span>
+						<span class="chip">ETL</span>
+						<span class="chip">Airflow</span>
+						<span class="chip">Pipeline de Dados</span>
+						<span class="chip">Engenharia de Dados</span>
+						<span class="chip verified">Jupyter Notebook</span>
+						<span class="chip verified">PostgreSQL</span>
+						<span class="chip verified">SQLite</span>
+						<span class="chip">Modelagem de Dados</span>
+						<span class="chip">Arquitetura de Banco de Dados</span>
+					</div>
+				</article>
+
+				<article class="skill-group">
+					<h3>Web & Desenvolvimento</h3>
+					<div class="chips">
+						<span class="chip verified">JavaScript</span>
+						<span class="chip">HTML</span>
+						<span class="chip">CSS</span>
+						<span class="chip">Web Responsiva</span>
+						<span class="chip verified">Programação Orientada a Objetos</span>
+						<span class="chip">Análise de Dados</span>
+						<span class="chip">Visualização de Dados</span>
+						<span class="chip">Integração de APIs</span>
+					</div>
+				</article>
+
+				<article class="skill-group">
+					<h3>Infraestrutura & DevOps</h3>
+					<div class="chips">
+						<span class="chip">Linux</span>
+						<span class="chip">Windows</span>
+						<span class="chip">PowerShell</span>
+						<span class="chip">Bash</span>
+						<span class="chip">CLI</span>
+						<span class="chip">Git</span>
+						<span class="chip">GitHub</span>
+						<span class="chip">Administração de Servidores</span>
+						<span class="chip">Virtualização</span>
+						<span class="chip">Gerenciamento de Configuração</span>
+						<span class="chip">VS Code</span>
+						<span class="chip">PyCharm</span>
+					</div>
+				</article>
+
+				<article class="skill-group">
+					<h3>Governança & Negócio</h3>
+					<div class="chips">
+						<span class="chip">Compliance</span>
+						<span class="chip">LGPD</span>
+						<span class="chip">Gestão de Projetos de TI</span>
+						<span class="chip">Análise de Sistemas</span>
+						<span class="chip">Levantamento de Requisitos</span>
+						<span class="chip">Arquitetura Orientada a Serviços (SOA)</span>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section id="timeline">
+			<h2>Experiência Profissional</h2>
+			<p class="section-intro">
+				Carreira consolidada com 17+ anos em tecnologia, infraestrutura e gestão,
+				atualmente migrando para especialização em cloud computing e dados.
+			</p>
+			<div class="timeline">
+				<article class="timeline-item">
+					<small>2017 - Presente</small>
+					<h3>Diretor do Departamento de Informática</h3>
+					<p>
+						<strong>Prefeitura Municipal de São Sebastião de Lagoa de Roça, PB</strong><br>
+						Gerenciamento da infraestrutura de TI, supervisão de aquisições, gestão de contratos,
+						implementação de políticas de segurança, LGPD e desenvolvimento de portais institucionais.
+					</p>
+				</article>
+
+				<article class="timeline-item">
+					<small>2010 - 2016</small>
+					<h3>Administrador de Redes</h3>
+					<p>
+						<strong>Prefeitura Municipal de São Sebastião de Lagoa de Roça, PB</strong><br>
+						Administração de infraestrutura de redes, intranet, backbone entre secretarias,
+						monitoramento de hardwares e sistemas.
+					</p>
+				</article>
+
+				<article class="timeline-item">
+					<small>2008 - 2009</small>
+					<h3>Técnico Líder</h3>
+					<p>
+						<strong>Armazém Paraíba</strong><br>
+						Gerenciamento de infraestrutura, supervisão de equipe técnica, suporte a 27 filiais,
+						implementação de ERP e banco de dados.
+					</p>
+				</article>
+
+				<article class="timeline-item">
+					<small>2008</small>
+					<h3>Técnico Líder - Field Service Management</h3>
+					<p>
+						<strong>Probank | ViaTelecom</strong><br>
+						Coordenação de equipe, treinamento e desenvolvimento de Field Service.
+					</p>
+				</article>
+
+				<article class="timeline-item">
+					<small>2007 - 2008</small>
+					<h3>Técnico Nível 2</h3>
+					<p>
+						<strong>Probank | ViaTelecom</strong><br>
+						Field Service onsite, instalação de terminais POS, redes Cisco, equipamentos de telecomunicação.
+					</p>
+				</article>
+
+				<article class="timeline-item">
+					<small>2005</small>
+					<h3>Transição para Cloud & Especialização</h3>
+					<p>
+						Início da trajetória técnica como Técnico em Informática e Redes (InforQuality).
+						Atualmente em transição para especialização em Cloud Computing e IA,
+						buscando posição como Analista de Cloud Jr.
+					</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="presenca">
+			<h2>Presenca Online</h2>
+			<p class="section-intro">
+				Me acompanhe nos canais abaixo para ver codigo, certificacoes, formacoes e atualizacoes da minha jornada.
+			</p>
+			<div class="cards">
+				<article class="card">
+					<small>Codigo</small>
+					<h3>GitHub</h3>
+					<p>Repositorios, praticas e projetos em desenvolvimento.</p>
+					<a href="https://github.com/orlandojsjunior" target="_blank" rel="noopener noreferrer">Acessar perfil</a>
+				</article>
+				<article class="card">
+					<small>Networking</small>
+					<h3>LinkedIn</h3>
+					<p>Experiencias, conexoes profissionais e atualizacoes de carreira.</p>
+					<a href="https://www.linkedin.com/in/orlandojsjunior/" target="_blank" rel="noopener noreferrer">Ver perfil</a>
+				</article>
+				<article class="card">
+					<small>Formacao</small>
+					<h3>Alura</h3>
+					<p>Trilhas de estudo, cursos concluidos e evolucao tecnica.</p>
+					<a href="https://cursos.alura.com.br/user/orlandojsjunior" target="_blank" rel="noopener noreferrer">Consultar cursos</a>
+				</article>
+				<article class="card">
+					<small>Badges</small>
+					<h3>Credly</h3>
+					<p>Badges publicos com destaque para AWS re/Start e AWS Certified Cloud Practitioner.</p>
+					<a href="https://www.credly.com/users/orlandojsjunior/badges#credly" target="_blank" rel="noopener noreferrer">Ver badges</a>
+				</article>
+			</div>
+		</section>
+
+		<section id="portfolio">
+			<h2>Portfolio</h2>
+			<p class="section-intro">
+				Projetos publicados em producao e repositorios publicos no GitHub demonstrando aplicacao pratica de tecnologia em contextos reais.
+			</p>
+			<div class="projects">
+				<article class="project">
+					<h3>Portal da Transparencia - Lagoa de Roca/PB</h3>
+					<p>Plataforma para acesso a informacoes publicas e acompanhamento da gestao municipal.</p>
+					<a href="https://transparencia.lagoaderoca.pb.gov.br/" target="_blank" rel="noopener noreferrer">Abrir projeto</a>
+				</article>
+
+				<article class="project">
+					<h3>Transparencia da Camara - Lagoa de Roca/PB</h3>
+					<p>Portal institucional com dados e conteudos para acompanhamento legislativo.</p>
+					<a href="https://transparencia.camaralagoaderoca.pb.gov.br/" target="_blank" rel="noopener noreferrer">Abrir projeto</a>
+				</article>
+
+				<article class="project">
+					<h3>IPSM - Lagoa de Roca/PB</h3>
+					<p>Site institucional voltado a servicos e informacoes para os segurados do instituto.</p>
+					<a href="https://ipsm.lagoaderoca.pb.gov.br/" target="_blank" rel="noopener noreferrer">Abrir projeto</a>
+				</article>
+
+				<article class="project">
+					<h3>Engenharia de Dados - Pipeline de Dados com Python</h3>
+					<p>Projeto focado em processamento de dados combinando Python, Pandas e orientacao a objetos em ambiente Jupyter.</p>
+					<a href="https://github.com/orlandojsjunior/Engenharia_de_Dados-Pipeline_de_dados-Python_e_orientacao_a_objeto" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
+				</article>
+
+				<article class="project">
+					<h3>Trilha Data Science - Pandas e Analise de Dados</h3>
+					<p>Estudos praticos em Data Science utilizando Pandas, visualizacao de dados e tecnicas de analise em Python.</p>
+					<a href="https://github.com/orlandojsjunior?tab=repositories" target="_blank" rel="noopener noreferrer">Ver repositorios</a>
+				</article>
+
+				<article class="project">
+					<h3>BibliotecaDev - Biblioteca de Recursos Profissionais</h3>
+					<p>Repositorio colaborativo com livros e materiais essenciais para desenvolvimento profissional (20 stars no GitHub).</p>
+					<a href="https://github.com/orlandojsjunior/BibliotecaDev" target="_blank" rel="noopener noreferrer">Ver repositorio</a>
+				</article>
+			</div>
+		</section>
+
+		<footer>
+			<p>Site pessoal e portfolio - Orlando Junior</p>
+		</footer>
+	</main>
 </body>
 </html>
