@@ -1,5 +1,10 @@
 $ErrorActionPreference = 'Stop'
 
+# Evita que mensagens informativas de stderr (ex.: docker build) parem o script.
+if (Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue) {
+  $PSNativeCommandUseErrorActionPreference = $false
+}
+
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $root
 
