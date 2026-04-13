@@ -1,47 +1,33 @@
 # UNO Online - Pai e Filho
 
-Versao simples de UNO para 2 jogadores, feita em HTML/CSS/JS, com conexao em tempo real via PeerJS (WebRTC).
+Projeto reescrito do zero para jogar UNO de verdade com 2 jogadores.
 
-## Como testar
+## Como funciona
 
-- No GitHub Pages: abra a pagina do jogo e crie/entre na sala normalmente.
-- Em localhost/Docker: o jogo usa o servidor PeerJS local em `http://localhost:3000/peerjs`.
+- O pai cria a sala.
+- O filho entra com o código.
+- O servidor Python mantém a partida em tempo real.
+- A interface é simples, grande e fácil de usar com uma criança de 6 anos.
 
-## Observacao
+## Regras básicas
 
-O jogo nao precisa de backend proprio para funcionar no GitHub Pages, mas depende de um servidor de sinalizacao. No deploy publico, ele usa o servidor publico do PeerJS; no ambiente local, usa o servidor do Docker.
+- Jogadas por cor ou número.
+- Cartas especiais: Pula, Reverte, +2, Cor e +4.
+- UNO quando ficar com 2 cartas.
+- Vence quem zerar a mão primeiro.
 
-## Como jogar
+## Como rodar localmente
 
-1. Abra o arquivo `index.html` no navegador (de preferencia usando um servidor local).
-2. Jogador 1: digite o nome e clique em **Criar sala**.
-3. Compartilhe o codigo da sala com o Jogador 2.
-4. Jogador 2: digite o nome, informe o codigo e clique em **Entrar**.
-5. Joguem em tempo real.
+```bash
+docker compose up --build
+```
 
-## Regras implementadas
+Depois abra:
 
-- 2 jogadores
-- Cartas numericas (0-9)
-- Cartas especiais: Pula, Reverso, +2, Cor, +4
-- Botao UNO (se esquecer UNO ao ficar com 1 carta, compra 2)
-- Compra de 1 carta por turno
-- Vitoria quando ficar sem cartas
+`http://localhost:8000/projects/uno/`
 
-## Dicas
+## Como usar
 
-- Para uso local mais estavel, rode com servidor web simples.
-- Exemplo com Node.js: `npx serve .`
-- Exemplo com Python: `python -m http.server 8080`
-
-Depois abra `http://localhost:8080`.
-
-## Publicar para jogar pela internet
-
-Voce pode publicar esta pasta em qualquer hospedagem esttica:
-
-- GitHub Pages
-- Netlify
-- Vercel
-
-Depois, voce e seu filho acessam a mesma URL em dispositivos diferentes.
+1. O pai clica em "Sou o PAI" e cria a sala.
+2. O filho clica em "Sou o FILHO" e entra com o código.
+3. Joguem em tempo real.

@@ -1,181 +1,28 @@
-// ===== CONFIGURAÇÃO DE SOM =====
-const GAME_VERSION = "1.2.0";
-const GAME_RELEASES = {
-  "1.2.0": "GitHub Pages com sinalizacao publica e suporte a teste local via Docker.",
-  "1.1.0": "Color picker corrigido; cor escolhida para WILD/W4 agora é persistida corretamente.",
-  "1.0.0": "Versao inicial do UNO pai e filho com sala por codigo."
-};
-
-function getPeerOptions() {
-  const hostname = window.location.hostname;
-  const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "0.0.0.0";
-
-  if (isLocalHost) {
-    return {
-      host: hostname,
-      port: Number(window.location.port) || 3000,
-      path: "/peerjs",
-      secure: window.location.protocol === "https:"
-    };
-  }
-
-  return {
-    host: "0.peerjs.com",
-    port: 443,
-    path: "/",
-    secure: true
-  };
-}
-
-function createPeer(id) {
-  const options = getPeerOptions();
-  return typeof id === "string" ? new Peer(id, options) : new Peer(options);
-}
-
-const soundManager = {
-  enabled: localStorage.getItem('unoSoundEnabled') !== 'false',
-  
-  playSound(type) {
-    if (!this.enabled) return;
-    
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    const now = audioContext.currentTime;
-    
-    switch(type) {
-      case 'play':
-        oscillator.frequency.value = 800;
-        gainNode.gain.setValueAtTime(0.2, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-        oscillator.start(now);
-        oscillator.stop(now + 0.15);
-        break;
-      case 'draw':
-        oscillator.frequency.value = 600;
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-        oscillator.start(now);
-        oscillator.stop(now + 0.1);
-        break;
-      case 'uno':
-        oscillator.frequency.value = 1200;
-        gainNode.gain.setValueAtTime(0.3, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        oscillator.start(now);
-        oscillator.stop(now + 0.3);
-        break;
-      case 'win':
-        for (let i = 0; i < 3; i++) {
-          const freqs = [800, 1000, 1200];
-          const osc = audioContext.createOscillator();
-          const gain = audioContext.createGain();
-          osc.connect(gain);
-          gain.connect(audioContext.destination);
-          osc.frequency.value = freqs[i];
-          gain.gain.setValueAtTime(0.2, now + i * 0.2);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.2 + 0.3);
-          osc.start(now + i * 0.2);
-          osc.stop(now + i * 0.2 + 0.3);
-        }
-        break;
-    }
-  }
-};
-
-// ===== CONFIGURAÇÃO DE DARK MODE =====
-const themeManager = {
-  isDark: localStorage.getItem('unoDarkMode') === 'true',
-  
-  init() {
-    if (this.isDark) {
-      document.body.classList.add('dark-mode');
-      document.getElementById('toggleDarkMode').textContent = '☀️';
-    }
-  },
-  
-  toggle() {
-    this.isDark = !this.isDark;
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('unoDarkMode', this.isDark);
-    document.getElementById('toggleDarkMode').textContent = this.isDark ? '☀️' : '🌙';
-  }
-};
-
-// ===== RASTREAMENTO DE PONTOS =====
-const scoreTracker = {
-  scores: JSON.parse(localStorage.getItem('unoScores')) || {},
-  
-  getScore(playerName) {
-    return this.scores[playerName] || 0;
-  },
-  
-  addScore(playerName, points) {
-    this.scores[playerName] = (this.scores[playerName] || 0) + points;
-    localStorage.setItem('unoScores', JSON.stringify(this.scores));
-  },
-  
-  getDisplay(p1Name, p2Name) {
-    const p1Score = this.getScore(p1Name);
-    const p2Score = this.getScore(p2Name);
-    return `📊 ${p1Name}: ${p1Score} | ${p2Name}: ${p2Score}`;
-  },
-  
-  reset() {
-    this.scores = {};
-    localStorage.removeItem('unoScores');
-  }
-};
-
-// ===== TIMER DE TURNO =====
-const turnTimer = {
-  maxTime: 30,
-  remainingTime: 30,
-  interval: null,
-  
-  start(callback) {
-    this.remainingTime = this.maxTime;
-    this.updateDisplay();
-    
-    this.interval = setInterval(() => {
-      this.remainingTime--;
-      this.updateDisplay();
-      
-      if (this.remainingTime <= 0) {
-        this.stop();
-        callback();
-      }
-    }, 1000);
-  },
-  
-  stop() {
-    if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = null;
-    }
-  },
-  
-  updateDisplay() {
-    const timerEl = document.getElementById('turnTimer');
-    if (timerEl) {
-      timerEl.textContent = String(this.remainingTime);
-      timerEl.classList.toggle('warning', this.remainingTime <= 5);
-    }
-  }
-};
-
-// ===== CÓDIGO ORIGINAL (LIGEIRAMENTE MODIFICADO) =====
 const COLORS = ["R", "G", "B", "Y"];
-const VALUE_LABEL = {
-  SKIP: "PULA",
-  REV: "REV",
+const COLOR_NAMES = {
+  R: "Vermelho",
+  G: "Verde",
+  B: "Azul",
+  Y: "Amarelo",
+  W: "Livre"
+};
+const VALUE_LABELS = {
+  SKIP: "Pula",
+  REV: "Reverte",
   D2: "+2",
-  WILD: "COR",
+  WILD: "Cor",
   W4: "+4"
+};
+
+const state = {
+  socket: null,
+  connected: false,
+  myRole: null,
+  myIndex: null,
+  roomCode: "",
+  view: null,
+  waitingCardId: null,
+  lastRenderedAction: ""
 };
 
 const ui = {
@@ -193,7 +40,7 @@ const ui = {
   joinRoomBtn: document.getElementById("joinRoomBtn"),
   status: document.getElementById("status"),
   roomCode: document.getElementById("roomCode"),
-  connectionLabel: document.getElementById("connectionLabel"),
+  connectionStatus: document.getElementById("connectionStatus"),
   myName: document.getElementById("myName"),
   opponentName: document.getElementById("opponentName"),
   myCount: document.getElementById("myCount"),
@@ -203,127 +50,80 @@ const ui = {
   discardPile: document.getElementById("discardPile"),
   drawBtn: document.getElementById("drawBtn"),
   unoBtn: document.getElementById("unoBtn"),
+  restartBtn: document.getElementById("restartBtn"),
   activeColor: document.getElementById("activeColor"),
   turnLabel: document.getElementById("turnLabel"),
   log: document.getElementById("log"),
-  colorPicker: document.getElementById("colorPicker"),
-  scoreDisplay: document.getElementById("scoreDisplay"),
-  toggleSound: document.getElementById("toggleSound"),
-  toggleDarkMode: document.getElementById("toggleDarkMode")
-};
-
-const app = {
-  peer: null,
-  conn: null,
-  isHost: false,
-  myIndex: -1,
-  myRole: null, // 'pai' ou 'filho'
-  myName: "",
-  roomCode: "",
-  hostState: null,
-  viewState: null,
-  waitingCardId: null
+  colorPicker: document.getElementById("colorPicker")
 };
 
 function setStatus(text) {
   ui.status.textContent = text;
 }
 
-function getVersionNotes(version) {
-  return GAME_RELEASES[version] || "Sem notas de versão registradas.";
+function setConnection(text) {
+  ui.connectionStatus.textContent = text;
 }
 
-function addLog(text) {
-  const p = document.createElement("p");
-  p.textContent = text;
-  ui.log.prepend(p);
-}
-
-function randomRoomCode() {
-  return Math.random().toString(36).slice(2, 8).toUpperCase();
-}
-
-function shuffle(list) {
-  for (let i = list.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [list[i], list[j]] = [list[j], list[i]];
+function send(type, payload = {}) {
+  if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+    state.socket.send(JSON.stringify({ type, ...payload }));
   }
 }
 
-function createDeck() {
-  const deck = [];
-  let idCount = 0;
-
-  for (const color of COLORS) {
-    deck.push({ id: `C${idCount++}`, color, value: "0" });
-
-    for (let n = 1; n <= 9; n += 1) {
-      deck.push({ id: `C${idCount++}`, color, value: String(n) });
-      deck.push({ id: `C${idCount++}`, color, value: String(n) });
-    }
-
-    ["SKIP", "REV", "D2"].forEach((action) => {
-      deck.push({ id: `C${idCount++}`, color, value: action });
-      deck.push({ id: `C${idCount++}`, color, value: action });
-    });
-  }
-
-  for (let i = 0; i < 4; i += 1) {
-    deck.push({ id: `W${idCount++}`, color: "W", value: "WILD" });
-    deck.push({ id: `W${idCount++}`, color: "W", value: "W4" });
-  }
-
-  shuffle(deck);
-  return deck;
+function wsUrl() {
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  return `${protocol}//${window.location.host}/projects/uno/ws`;
 }
 
-function buildInitialState(hostName, guestName) {
-  const drawPile = createDeck();
-  const players = [
-    { name: hostName, hand: [] },
-    { name: guestName, hand: [] }
-  ];
+function connectSocket() {
+  state.socket = new WebSocket(wsUrl());
+  setConnection("Conectando ao servidor...");
 
-  for (let i = 0; i < 7; i += 1) {
-    players[0].hand.push(drawPile.pop());
-    players[1].hand.push(drawPile.pop());
-  }
+  state.socket.addEventListener("open", () => {
+    state.connected = true;
+    setConnection("Servidor conectado");
+    ui.createRoomBtn.disabled = false;
+    ui.joinRoomBtn.disabled = false;
+  });
 
-  let firstCard = drawPile.pop();
-  while (firstCard.value === "WILD" || firstCard.value === "W4") {
-    drawPile.unshift(firstCard);
-    firstCard = drawPile.pop();
-  }
+  state.socket.addEventListener("close", () => {
+    state.connected = false;
+    ui.createRoomBtn.disabled = true;
+    ui.joinRoomBtn.disabled = true;
+    setConnection("Conexão encerrada");
+    setStatus("Conexão com o servidor encerrada. Recarregue a página para tentar de novo.");
+  });
 
-  return {
-    players,
-    drawPile,
-    discard: [firstCard],
-    activeColor: firstCard.color,
-    turn: 0,
-    winner: null,
-    saidUno: [false, false],
-    lastAction: "Partida iniciada"
-  };
+  state.socket.addEventListener("message", (event) => {
+    const message = JSON.parse(event.data);
+    handleMessage(message);
+  });
+}
+
+function showGame() {
+  ui.lobby.classList.add("hidden");
+  ui.game.classList.remove("hidden");
+}
+
+function normalizeName() {
+  const name = ui.playerName.value.trim();
+  return name.slice(0, 24);
 }
 
 function cardLabel(card) {
-  return VALUE_LABEL[card.value] || card.value;
+  return VALUE_LABELS[card.value] || card.value;
 }
 
 function colorName(color) {
-  return (
-    {
-      R: "Vermelho",
-      G: "Verde",
-      B: "Azul",
-      Y: "Amarelo",
-      W: "Livre"
-    }[color] || "-"
-  );
+  return COLOR_NAMES[color] || "-";
 }
 
 function canPlay(card, topCard, activeColor) {
+  if (!card || !topCard) {
+    return false;
+  }
+
   if (card.value === "WILD" || card.value === "W4") {
     return true;
   }
@@ -331,536 +131,217 @@ function canPlay(card, topCard, activeColor) {
   return card.color === activeColor || card.value === topCard.value;
 }
 
-function ensureDrawPile(state) {
-  if (state.drawPile.length > 0) {
+function appendLog(text) {
+  if (!text) {
     return;
   }
 
-  const top = state.discard.pop();
-  const recycle = state.discard;
-  shuffle(recycle);
-  state.drawPile = recycle;
-  state.discard = [top];
+  const entry = document.createElement("p");
+  entry.textContent = text;
+  ui.log.prepend(entry);
 }
 
-function drawCards(state, playerIndex, count) {
-  for (let i = 0; i < count; i += 1) {
-    ensureDrawPile(state);
-    const card = state.drawPile.pop();
-    if (!card) {
-      break;
-    }
-    state.players[playerIndex].hand.push(card);
-  }
+function openColorPicker(cardId) {
+  state.waitingCardId = cardId;
+  ui.colorPicker.classList.remove("hidden");
+  ui.colorPicker.setAttribute("aria-hidden", "false");
 }
 
-function advanceTurn(state, steps) {
-  state.turn = (state.turn + steps) % 2;
+function closeColorPicker() {
+  state.waitingCardId = null;
+  ui.colorPicker.classList.add("hidden");
+  ui.colorPicker.setAttribute("aria-hidden", "true");
 }
 
-function applyCardEffect(state, card, chosenColor) {
-  if (card.value === "SKIP" || card.value === "REV") {
-    advanceTurn(state, 2);
-    return;
-  }
+function cardMarkup(card, playable) {
+  const label = cardLabel(card);
+  const colorClass = `card-${card.color.toLowerCase()}`;
+  const extra = playable ? "playable" : "";
 
-  if (card.value === "D2") {
-    const target = (state.turn + 1) % 2;
-    drawCards(state, target, 2);
-    advanceTurn(state, 2);
-    return;
-  }
-
-  if (card.value === "W4") {
-    const target = (state.turn + 1) % 2;
-    drawCards(state, target, 4);
-    // activeColor já foi atualizado em hostPlayCard
-    advanceTurn(state, 2);
-    return;
-  }
-
-  if (card.value === "WILD") {
-    // activeColor já foi atualizado em hostPlayCard
-    advanceTurn(state, 1);
-    return;
-  }
-
-  // Para cartas normais, activeColor já foi atualizado em hostPlayCard
-  advanceTurn(state, 1);
-}
-
-function hostPlayCard(playerIndex, cardId, chosenColor) {
-  const state = app.hostState;
-
-  if (!state || state.winner !== null || playerIndex !== state.turn) {
-    return;
-  }
-
-  const hand = state.players[playerIndex].hand;
-  const idx = hand.findIndex((c) => c.id === cardId);
-  if (idx === -1) {
-    return;
-  }
-
-  const card = hand[idx];
-  const top = state.discard[state.discard.length - 1];
-  if (!canPlay(card, top, state.activeColor)) {
-    return;
-  }
-
-  // Validação: WILD e W4 PRECISAM de cor escolhida
-  if ((card.value === "WILD" || card.value === "W4") && !chosenColor) {
-    console.warn("WILD/W4 requer cor escolhida!");
-    return;
-  }
-
-  // Validação: cor escolhida deve ser válida
-  if (chosenColor && !["R", "G", "B", "Y"].includes(chosenColor)) {
-    console.warn("Cor inválida:", chosenColor);
-    return;
-  }
-
-  hand.splice(idx, 1);
-  state.discard.push(card);
-
-  // Atualizar activeColor ANTES de aplicar efeito da carta
-  if (card.value === "WILD" || card.value === "W4") {
-    state.activeColor = chosenColor;
-  } else {
-    state.activeColor = card.color;
-  }
-
-  const beforeAdvancePlayer = state.turn;
-  applyCardEffect(state, card, chosenColor);
-
-  if (hand.length === 1 && !state.saidUno[playerIndex]) {
-    drawCards(state, playerIndex, 2);
-    state.lastAction = `${state.players[playerIndex].name} esqueceu UNO e comprou 2 cartas.`;
-  } else {
-    state.lastAction = `${state.players[playerIndex].name} jogou ${colorName(card.color)} ${cardLabel(card)}.`;
-  }
-
-  state.saidUno[beforeAdvancePlayer] = false;
-
-  if (hand.length === 0) {
-    state.winner = playerIndex;
-    state.lastAction = `${state.players[playerIndex].name} venceu a partida!`;
-    soundManager.playSound('win');
-    updateScoreDisplay();
-  }
-
-  soundManager.playSound('play');
-  broadcastState();
-}
-
-function hostDrawOne(playerIndex) {
-  const state = app.hostState;
-  if (!state || state.winner !== null || playerIndex !== state.turn) {
-    return;
-  }
-
-  drawCards(state, playerIndex, 1);
-  state.saidUno[playerIndex] = false;
-  state.lastAction = `${state.players[playerIndex].name} comprou 1 carta.`;
-  advanceTurn(state, 1);
-  soundManager.playSound('draw');
-  broadcastState();
-}
-
-function hostCallUno(playerIndex) {
-  const state = app.hostState;
-  if (!state || state.winner !== null || playerIndex !== state.turn) {
-    return;
-  }
-
-  if (state.players[playerIndex].hand.length === 2) {
-    state.saidUno[playerIndex] = true;
-    state.lastAction = `${state.players[playerIndex].name} gritou UNO!`;
-    soundManager.playSound('uno');
-    broadcastState();
-  }
-}
-
-function cardToHtml(card, isPlayable) {
   return `
-    <div class="card c-${card.color} ${isPlayable ? "playable" : ""}" data-id="${card.id}">
-      <div class="small">${cardLabel(card)}</div>
-      <div class="big">${cardLabel(card)}</div>
-      <div class="small">${colorName(card.color)}</div>
-    </div>
+    <button class="card ${colorClass} ${extra}" data-card-id="${card.id}" data-value="${card.value}" data-playable="${playable ? "true" : "false"}">
+      <span class="small">${label}</span>
+      <span class="big">${card.color === "W" ? "?" : label}</span>
+      <span class="small">${card.color === "W" ? "Livre" : colorName(card.color)}</span>
+    </button>
   `;
 }
 
-function backCardHtml() {
-  return `
-    <div class="card">
-      <div class="small">UNO</div>
-      <div class="big">?</div>
-      <div class="small">Online</div>
-    </div>
-  `;
-}
-
-function updateScoreDisplay() {
-  const p1Name = app.viewState.players[0].name;
-  const p2Name = app.viewState.players[1].name;
-  ui.scoreDisplay.textContent = scoreTracker.getDisplay(p1Name, p2Name);
-}
-
-function render() {
-  const state = app.viewState;
-  if (!state) {
+function renderState() {
+  const view = state.view;
+  if (!view || state.myIndex === null) {
     return;
   }
 
-  ui.myName.textContent = state.players[app.myIndex].name;
-  ui.opponentName.textContent = state.players[(app.myIndex + 1) % 2].name;
-  ui.myCount.textContent = String(state.players[app.myIndex].hand.length);
-  ui.opponentCount.textContent = String(state.players[(app.myIndex + 1) % 2].hand.length);
+  const myPlayer = view.players[state.myIndex];
+  const otherPlayer = view.players[(state.myIndex + 1) % 2];
+  const topCard = view.discard[view.discard.length - 1];
+  const isMyTurn = view.turn === state.myIndex && view.winner === null;
 
-  const top = state.discard[state.discard.length - 1];
-  ui.discardPile.innerHTML = cardToHtml(top, false);
-  ui.activeColor.textContent = `Cor ativa: ${colorName(state.activeColor)}`;
+  ui.roomCode.textContent = view.roomCode;
+  ui.myName.textContent = myPlayer.name;
+  ui.opponentName.textContent = otherPlayer.name;
+  ui.myCount.textContent = String(myPlayer.hand.length);
+  ui.opponentCount.textContent = String(otherPlayer.hand.length);
+  ui.activeColor.textContent = `Cor ativa: ${colorName(view.activeColor)}`;
 
-  const isMyTurn = state.turn === app.myIndex;
-  
-  if (state.winner !== null) {
-    ui.turnLabel.innerHTML = `Fim de jogo: <strong>${state.players[state.winner].name}</strong> venceu!`;
-    turnTimer.stop();
+  if (view.winner !== null) {
+    ui.turnLabel.textContent = `Fim de jogo: ${view.players[view.winner].name} venceu!`;
+    ui.restartBtn.classList.remove("hidden");
   } else {
-    if (isMyTurn) {
-      ui.turnLabel.innerHTML = `Sua vez <span id="turnTimer" class="turn-timer">30</span>`;
-      turnTimer.start(() => {
-        if (app.isHost) {
-          hostDrawOne(app.myIndex);
-        } else {
-          send({ type: "action", action: "draw", playerIndex: app.myIndex });
-        }
-      });
-    } else {
-      ui.turnLabel.textContent = "Vez do adversario...";
-      turnTimer.stop();
-    }
+    ui.turnLabel.textContent = isMyTurn ? "Sua vez" : "Vez do seu par";
+    ui.restartBtn.classList.add("hidden");
   }
 
-  const myHand = state.players[app.myIndex].hand;
-  ui.myCards.innerHTML = myHand
-    .map((card) => cardToHtml(card, isMyTurn && canPlay(card, top, state.activeColor) && state.winner === null))
+  ui.drawBtn.disabled = !isMyTurn;
+  ui.unoBtn.disabled = !isMyTurn || myPlayer.hand.length !== 2;
+
+  ui.discardPile.innerHTML = topCard ? cardMarkup(topCard, false) : "";
+  ui.myCards.innerHTML = myPlayer.hand
+    .map((card) => cardMarkup(card, isMyTurn && canPlay(card, topCard, view.activeColor)))
     .join("");
 
-  const enemyCount = state.players[(app.myIndex + 1) % 2].hand.length;
-  ui.opponentCards.innerHTML = new Array(enemyCount).fill("").map(backCardHtml).join("");
+  ui.opponentCards.innerHTML = new Array(otherPlayer.hand.length)
+    .fill("")
+    .map(() => `<div class="card back"><span class="small">UNO</span><span class="big">?</span><span class="small">Online</span></div>`)
+    .join("");
 
-  ui.drawBtn.disabled = !isMyTurn || state.winner !== null;
-  ui.unoBtn.disabled = !isMyTurn || state.winner !== null || myHand.length !== 2;
-
-  updateScoreDisplay();
-
-  if (state.lastAction) {
-    addLog(state.lastAction);
-    state.lastAction = "";
+  if (view.lastAction && view.lastAction !== state.lastRenderedAction) {
+    state.lastRenderedAction = view.lastAction;
+    appendLog(view.lastAction);
   }
 }
 
-function send(data) {
-  if (app.conn && app.conn.open) {
-    app.conn.send(data);
+function handleMessage(message) {
+  switch (message.type) {
+    case "hello":
+      setStatus(message.message);
+      break;
+    case "room_created":
+      state.myRole = "pai";
+      state.myIndex = 0;
+      state.roomCode = message.roomCode;
+      showGame();
+      ui.roomCode.textContent = message.roomCode;
+      setStatus(message.message);
+      break;
+    case "joined":
+      state.myRole = "filho";
+      state.myIndex = 1;
+      state.roomCode = message.roomCode;
+      showGame();
+      ui.roomCode.textContent = message.roomCode;
+      setStatus(message.message);
+      break;
+    case "status":
+      if (message.message) {
+        setConnection(message.message);
+      }
+      break;
+    case "state":
+      state.view = message.state;
+      renderState();
+      break;
+    case "error":
+      setStatus(message.message);
+      break;
+    default:
+      break;
   }
 }
 
-function broadcastState() {
-  app.viewState = JSON.parse(JSON.stringify(app.hostState));
-  render();
-  send({ type: "state", state: app.hostState });
-}
+function bindEvents() {
+  ui.createRoomBtn.disabled = true;
+  ui.joinRoomBtn.disabled = true;
 
-function startGameView() {
-  ui.lobby.classList.add("hidden");
-  ui.game.classList.remove("hidden");
-  ui.roomCode.textContent = app.roomCode;
-  ui.connectionLabel.textContent = "Conectado ✓";
-}
-
-function handleAction(msg) {
-  if (!app.isHost || !msg || !msg.action) {
-    return;
-  }
-
-  if (msg.action === "play") {
-    hostPlayCard(msg.playerIndex, msg.cardId, msg.chosenColor);
-    return;
-  }
-
-  if (msg.action === "draw") {
-    hostDrawOne(msg.playerIndex);
-    return;
-  }
-
-  if (msg.action === "uno") {
-    hostCallUno(msg.playerIndex);
-  }
-}
-
-function setupConn(conn) {
-  app.conn = conn;
-
-  conn.on("open", () => {
-    if (!app.isHost) {
-      send({ type: "join", name: app.myName });
-      startGameView();
-    }
-
-    ui.connectionLabel.textContent = "Conectado ✓";
+  ui.selectPai.addEventListener("click", () => {
+    state.myRole = "pai";
+    ui.roleSelection.classList.add("hidden");
+    ui.gameSetup.classList.remove("hidden");
+    ui.paiControls.classList.remove("hidden");
+    ui.filhoControls.classList.add("hidden");
+    setStatus("Você é o PAI. Digite seu nome e crie a sala.");
   });
 
-  conn.on("data", (data) => {
-    if (!data || typeof data !== "object") {
+  ui.selectFilho.addEventListener("click", () => {
+    state.myRole = "filho";
+    ui.roleSelection.classList.add("hidden");
+    ui.gameSetup.classList.remove("hidden");
+    ui.paiControls.classList.add("hidden");
+    ui.filhoControls.classList.remove("hidden");
+    setStatus("Você é o FILHO. Digite seu nome e entre com o código da sala.");
+  });
+
+  ui.createRoomBtn.addEventListener("click", () => {
+    const name = normalizeName();
+    if (!name) {
+      setStatus("Digite um nome para criar a sala.");
       return;
     }
 
-    if (app.isHost && data.type === "join") {
-      app.hostState = buildInitialState(app.myName, data.name || "Convidado");
-      app.viewState = JSON.parse(JSON.stringify(app.hostState));
-      startGameView();
-      broadcastState();
+    send("create", { name });
+  });
+
+  ui.joinRoomBtn.addEventListener("click", () => {
+    const name = normalizeName();
+    const roomCode = ui.roomCodeInput.value.trim().toUpperCase();
+
+    if (!name) {
+      setStatus("Digite um nome para entrar na sala.");
       return;
     }
 
-    if (app.isHost && data.type === "action") {
-      handleAction(data);
+    if (!roomCode) {
+      setStatus("Informe o código da sala.");
       return;
     }
 
-    if (!app.isHost && data.type === "state") {
-      app.viewState = data.state;
-      render();
+    send("join", { name, roomCode });
+  });
+
+  ui.drawBtn.addEventListener("click", () => send("draw"));
+  ui.unoBtn.addEventListener("click", () => send("uno"));
+  ui.restartBtn.addEventListener("click", () => send("restart"));
+
+  ui.myCards.addEventListener("click", (event) => {
+    const cardButton = event.target.closest(".card");
+    if (!cardButton || cardButton.dataset.playable !== "true") {
+      return;
     }
+
+    const cardId = cardButton.dataset.cardId;
+    const value = cardButton.dataset.value;
+
+    if (value === "WILD" || value === "W4") {
+      openColorPicker(cardId);
+      return;
+    }
+
+    send("play", { cardId, chosenColor: null });
   });
 
-  conn.on("close", () => {
-    ui.connectionLabel.textContent = "Conexao encerrada ✗";
-    addLog("Conexao foi encerrada.");
-    turnTimer.stop();
+  ui.colorPicker.addEventListener("click", (event) => {
+    const colorButton = event.target.closest(".color-choice");
+    if (!colorButton || !state.waitingCardId) {
+      return;
+    }
+
+    const chosenColor = colorButton.dataset.color;
+    send("play", { cardId: state.waitingCardId, chosenColor });
+    closeColorPicker();
   });
 
-  conn.on("error", () => {
-    ui.connectionLabel.textContent = "Erro de conexao ⚠";
-    addLog("Erro na conexao entre os jogadores.");
+  ui.colorPicker.addEventListener("click", (event) => {
+    if (event.target === ui.colorPicker) {
+      closeColorPicker();
+    }
   });
 }
 
-function validateName() {
-  const name = ui.playerName.value.trim();
-  if (!name) {
-    setStatus("Informe um nome para continuar.");
-    return "";
-  }
-  return name.slice(0, 24);
+function init() {
+  bindEvents();
+  connectSocket();
+  setStatus("Escolha seu papel para começar.");
 }
 
-ui.createRoomBtn.addEventListener("click", () => {
-  const name = validateName();
-  if (!name) {
-    return;
-  }
-
-  app.isHost = true;
-  app.myIndex = 0;
-  app.myName = name;
-  app.roomCode = randomRoomCode();
-  ui.connectionLabel.textContent = "Aguardando seu filho entrar...";
-
-  app.peer = createPeer(app.roomCode);
-
-  app.peer.on("open", (id) => {
-    setStatus(`Sala criada com sucesso. Codigo: ${id}`);
-    ui.roomCode.textContent = id;
-  });
-
-  app.peer.on("connection", (conn) => {
-    if (app.conn && app.conn.open) {
-      conn.close();
-      return;
-    }
-    setupConn(conn);
-  });
-
-  app.peer.on("error", () => {
-    setStatus("Nao foi possivel criar a sala agora. Tente de novo.");
-  });
-});
-
-ui.joinRoomBtn.addEventListener("click", () => {
-  const name = validateName();
-  const roomCode = ui.roomCodeInput.value.trim().toUpperCase();
-  if (!name) {
-    return;
-  }
-  if (!roomCode) {
-    setStatus("Informe o codigo da sala para entrar.");
-    return;
-  }
-
-  app.isHost = false;
-  app.myIndex = 1;
-  app.myName = name;
-  app.roomCode = roomCode;
-
-  app.peer = createPeer();
-
-  app.peer.on("open", () => {
-    const conn = app.peer.connect(roomCode, { reliable: true });
-    setupConn(conn);
-    setStatus("Tentando conectar na sala...");
-  });
-
-  app.peer.on("error", () => {
-    setStatus("Nao foi possivel entrar na sala. Confira o codigo e tente novamente.");
-  });
-});
-
-ui.drawBtn.addEventListener("click", () => {
-  if (!app.viewState || app.viewState.turn !== app.myIndex || app.viewState.winner !== null) {
-    return;
-  }
-
-  if (app.isHost) {
-    hostDrawOne(app.myIndex);
-  } else {
-    send({ type: "action", action: "draw", playerIndex: app.myIndex });
-  }
-});
-
-ui.unoBtn.addEventListener("click", () => {
-  if (!app.viewState || app.viewState.turn !== app.myIndex || app.viewState.winner !== null) {
-    return;
-  }
-
-  if (app.isHost) {
-    hostCallUno(app.myIndex);
-  } else {
-    send({ type: "action", action: "uno", playerIndex: app.myIndex });
-  }
-});
-
-ui.myCards.addEventListener("click", (event) => {
-  const target = event.target.closest(".card");
-  if (!target || !app.viewState || app.viewState.turn !== app.myIndex || app.viewState.winner !== null) {
-    return;
-  }
-
-  const cardId = target.dataset.id;
-  if (!cardId) {
-    return;
-  }
-
-  const myHand = app.viewState.players[app.myIndex].hand;
-  const selected = myHand.find((c) => c.id === cardId);
-  if (!selected) {
-    return;
-  }
-
-  const top = app.viewState.discard[app.viewState.discard.length - 1];
-  if (!canPlay(selected, top, app.viewState.activeColor)) {
-    return;
-  }
-
-  if (selected.value === "WILD" || selected.value === "W4") {
-    app.waitingCardId = cardId;
-    ui.colorPicker.classList.remove("hidden");
-    return;
-  }
-
-  if (app.isHost) {
-    hostPlayCard(app.myIndex, cardId, null);
-  } else {
-    send({ type: "action", action: "play", playerIndex: app.myIndex, cardId, chosenColor: null });
-  }
-});
-
-ui.colorPicker.addEventListener("click", (event) => {
-  event.stopPropagation();
-  const button = event.target.closest(".color-btn");
-  if (!button || !app.waitingCardId) {
-    return;
-  }
-
-  const chosenColor = button.dataset.color;
-  const cardId = app.waitingCardId;
-  
-  if (!chosenColor) {
-    console.error("Cor não foi definida no botão!");
-    return;
-  }
-  
-  console.log(`Cor escolhida: ${chosenColor} para carta ${cardId}`);
-  
-  app.waitingCardId = null;
-  ui.colorPicker.classList.add("hidden");
-
-  if (app.isHost) {
-    hostPlayCard(app.myIndex, cardId, chosenColor);
-  } else {
-    send({
-      type: "action",
-      action: "play",
-      playerIndex: app.myIndex,
-      cardId,
-      chosenColor
-    });
-  }
-});
-
-// Fechar modal ao clicar fora dos botões
-ui.colorPicker.addEventListener("click", (event) => {
-  if (event.target === ui.colorPicker) {
-    ui.colorPicker.classList.add("hidden");
-    app.waitingCardId = null;
-  }
-});
-
-// ===== SELEÇÃO DE PAPEL (PAI / FILHO) =====
-ui.selectPai.addEventListener('click', () => {
-  app.myRole = 'pai';
-  ui.roleSelection.classList.add('hidden');
-  ui.gameSetup.classList.remove('hidden');
-  ui.paiControls.classList.remove('hidden');
-  ui.filhoControls.classList.add('hidden');
-  setStatus('Você é o PAI. Digite seu nome e crie a sala.');
-});
-
-ui.selectFilho.addEventListener('click', () => {
-  app.myRole = 'filho';
-  ui.roleSelection.classList.add('hidden');
-  ui.gameSetup.classList.remove('hidden');
-  ui.paiControls.classList.add('hidden');
-  ui.filhoControls.classList.remove('hidden');
-  setStatus('Você é o FILHO. Digite seu nome e entre no código da sala do seu pai.');
-});
-
-// ===== INICIALIZAÇÃO =====
-document.addEventListener('DOMContentLoaded', () => {
-  themeManager.init();
-  updateScoreDisplay();
-  const versionBadge = document.getElementById('versionBadge');
-  if (versionBadge) {
-    versionBadge.textContent = `v${GAME_VERSION}`;
-    versionBadge.title = `${versionBadge.textContent} - ${getVersionNotes(GAME_VERSION)}`;
-  }
-  
-  ui.toggleSound.addEventListener('click', () => {
-    soundManager.enabled = !soundManager.enabled;
-    localStorage.setItem('unoSoundEnabled', soundManager.enabled);
-    ui.toggleSound.textContent = soundManager.enabled ? '🔊' : '🔇';
-    soundManager.playSound('play');
-  });
-  
-  ui.toggleDarkMode.addEventListener('click', () => {
-    themeManager.toggle();
-  });
-  
-  // Resetar timer ao sair
-  window.addEventListener('beforeunload', () => {
-    turnTimer.stop();
-  });
-});
+document.addEventListener("DOMContentLoaded", init);

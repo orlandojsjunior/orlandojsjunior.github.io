@@ -2,12 +2,19 @@
 
 ## Site pessoal e portifólio - Orlando Junior
 
-## Teste local do UNO com Docker
+## Projetos
 
-Se quiser testar o jogo localmente com sala real e conexão PeerJS:
+- Página pessoal e portfólio
+- UNO jogável em `projects/uno/`
 
-1. `docker compose up --build`
-2. Abra `http://localhost:3000/projects/uno/`
-3. O PAI cria a sala e o FILHO entra com o código
+## Como testar o UNO
 
-No GitHub Pages, o jogo usa um servidor público de sinalização do PeerJS para manter a jogabilidade direta no navegador.
+```bash
+docker compose up --build
+```
+
+Depois abra:
+
+`http://localhost:8000/projects/uno/`
+
+O pai cria a sala e o filho entra com o código.

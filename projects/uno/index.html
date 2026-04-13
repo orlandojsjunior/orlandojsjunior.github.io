@@ -10,115 +10,103 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="bg-shape bg-shape-1"></div>
-  <div class="bg-shape bg-shape-2"></div>
-
   <main class="app">
-    <header class="topbar">
+    <header class="topbar panel">
       <div>
-        <h1>UNO ONLINE</h1>
-        <p>Versao para 2 jogadores com codigo de sala</p>
-        <div class="version-badge" id="versionBadge" title="Historico de versao"></div>
+        <p class="eyebrow">UNO Online</p>
+        <h1>Pai e Filho</h1>
+        <p class="lead">Crie uma sala, compartilhe o código e jogue com seu filho em tempo real.</p>
       </div>
-      <div class="topbar-controls">
-        <button id="toggleSound" class="toggle-btn" title="Alternar som">🔊</button>
-        <button id="toggleDarkMode" class="toggle-btn" title="Modo escuro">🌙</button>
-      </div>
+      <div class="status-pill" id="connectionStatus">Conectando ao servidor...</div>
     </header>
 
-    <section id="lobby" class="panel">
-      <h2>UNO - Pai e Filho</h2>
-      
-      <div class="role-selection" id="roleSelection">
-        <p style="text-align: center; margin-bottom: 20px; font-weight: 700;">Qual é o seu papel?</p>
-        <div class="lobby-grid">
-          <button id="selectPai" class="btn primary" style="padding: 20px; font-size: 1.1rem;">👨‍👦 Sou o PAI<br><small style="font-size: 0.8rem;">Criar sala</small></button>
-          <button id="selectFilho" class="btn" style="padding: 20px; font-size: 1.1rem;">👦 Sou o FILHO<br><small style="font-size: 0.8rem;">Entrar em sala</small></button>
+    <section id="lobby" class="panel lobby">
+      <div id="roleSelection">
+        <h2>Qual é o seu papel?</h2>
+        <div class="role-grid">
+          <button id="selectPai" class="btn primary role-btn">👨‍👦 Sou o PAI</button>
+          <button id="selectFilho" class="btn role-btn">👦 Sou o FILHO</button>
         </div>
       </div>
 
-      <div id="gameSetup" class="hidden">
+      <div id="gameSetup" class="hidden setup-grid">
         <label>
           Seu nome
           <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome" />
         </label>
 
-        <div id="paiControls" class="hidden">
-          <h3 style="color: var(--accent); margin-top: 20px;">🎮 Criar Sala (PAI)</h3>
-          <p style="color: var(--muted); margin-bottom: 15px;">Crie uma sala e compartilhe o código com seu filho.</p>
-          <button id="createRoomBtn" class="btn primary" style="width: 100%;">Criar Sala</button>
+        <div id="paiControls" class="hidden setup-card">
+          <h3>O pai cria a sala</h3>
+          <p>Depois compartilhe o código com o seu filho.</p>
+          <button id="createRoomBtn" class="btn primary full">Criar sala</button>
         </div>
 
-        <div id="filhoControls" class="hidden">
-          <h3 style="color: var(--secondary); margin-top: 20px;">🎮 Entrar em Sala (FILHO)</h3>
+        <div id="filhoControls" class="hidden setup-card">
+          <h3>O filho entra na sala</h3>
           <label>
-            Código da sala (do seu pai)
+            Código da sala
             <input id="roomCodeInput" type="text" maxlength="8" placeholder="ABC123" />
           </label>
-          <button id="joinRoomBtn" class="btn primary" style="width: 100%; margin-top: 10px;">Entrar na Sala</button>
+          <button id="joinRoomBtn" class="btn primary full">Entrar na sala</button>
         </div>
       </div>
 
-      <p id="status" class="status">Selecione seu papel para começar.</p>
+      <p id="status" class="status">Escolha seu papel para começar.</p>
     </section>
 
-    <section id="game" class="hidden">
-      <div class="room-info panel slim">
-        <div>
-          Sala: <strong id="roomCode">-</strong>
-        </div>
-        <div id="connectionLabel">Conectando...</div>
-        <div id="scoreDisplay" class="score-display"></div>
+    <section id="game" class="panel hidden game-shell">
+      <div class="room-bar">
+        <div>Sala: <strong id="roomCode">-</strong></div>
+        <div id="turnLabel">Aguardando a outra pessoa...</div>
+        <div id="activeColor" class="active-color">Cor ativa: -</div>
       </div>
 
       <div class="board">
-        <div class="panel opponent-panel">
+        <section class="player-panel">
           <div class="player-line">
-            <strong id="opponentName">Adversario</strong>
-            <span>Cartas: <b id="opponentCount">0</b></span>
+            <strong id="opponentName">Adversário</strong>
+            <span><b id="opponentCount">0</b> cartas</span>
           </div>
           <div id="opponentCards" class="cards-row cards-back"></div>
-        </div>
+        </section>
 
-        <div class="center-area panel">
-          <div class="pile" id="discardPile"></div>
-          <div class="center-actions">
+        <section class="center-panel">
+          <div id="discardPile" class="discard-pile"></div>
+          <div class="controls">
             <button id="drawBtn" class="btn">Comprar 1</button>
             <button id="unoBtn" class="btn danger">UNO!</button>
+            <button id="restartBtn" class="btn primary hidden">Nova partida</button>
           </div>
-          <div id="activeColor" class="active-color">Cor ativa: -</div>
-          <div id="turnLabel" class="turn">Aguardando...</div>
-        </div>
+        </section>
 
-        <div class="panel me-panel">
+        <section class="player-panel">
           <div class="player-line">
-            <strong id="myName">Voce</strong>
-            <span>Cartas: <b id="myCount">0</b></span>
+            <strong id="myName">Você</strong>
+            <span><b id="myCount">0</b> cartas</span>
           </div>
           <div id="myCards" class="cards-row"></div>
-        </div>
+        </section>
       </div>
 
       <section class="panel log-panel">
         <h3>Eventos</h3>
-        <div id="log"></div>
+        <div id="log" class="log"></div>
       </section>
     </section>
   </main>
 
-  <div id="colorPicker" class="modal hidden">
+  <div id="colorPicker" class="modal hidden" aria-hidden="true">
     <div class="modal-content">
       <h3>Escolha a cor</h3>
       <div class="color-grid">
-        <button data-color="R" class="color-btn red">Vermelho</button>
-        <button data-color="G" class="color-btn green">Verde</button>
-        <button data-color="B" class="color-btn blue">Azul</button>
-        <button data-color="Y" class="color-btn yellow">Amarelo</button>
+        <button class="color-choice red" data-color="R">Vermelho</button>
+        <button class="color-choice green" data-color="G">Verde</button>
+        <button class="color-choice blue" data-color="B">Azul</button>
+        <button class="color-choice yellow" data-color="Y">Amarelo</button>
       </div>
     </div>
   </div>
 
-  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
