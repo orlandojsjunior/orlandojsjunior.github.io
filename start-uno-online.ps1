@@ -1,3 +1,108 @@
+# Define o código de cores
+$Color_Off = "`e[0m"
+$Color_Green = "`e[32m"
+$Color_Yellow = "`e[33m"
+$Color_Blue = "`e[34m"
+$Color_Cyan = "`e[36m"
+
+# Função para exibir o banner
+function Show-Banner {
+    Clear-Host
+    Write-Host "${Color_Cyan}===================================================${Color_Off}"
+    Write-Host "${Color_Cyan}      INICIANDO O SERVIDOR DO JOGO UNO ONLINE      ${Color_Off}"
+    Write-Host "${Color_Cyan}===================================================${Color_Off}"
+    Write-Host
+}
+
+# Função para exibir uma etapa com barra de progresso
+function Write-Step {
+    param(
+        [string]$Message,
+        [int]$Step,
+        [int]$TotalSteps
+    )
+    $progress = ("=" * $Step).PadRight($TotalSteps)
+    Write-Host "${Color_Yellow}[$Step/$TotalSteps] ${Message}...${Color_Off}"
+}
+
+# --- INÍCIO DO SCRIPT ---
+
+Show-Banner
+
+# 1. Iniciar os contêineres em modo detached
+Write-Step "Iniciando os contêineres do Docker" 1 4
+docker compose up -d --build --force-recreate
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "${Color_Red}Falha ao iniciar os contêineres do Docker. Verifique se o Docker Desktop está em execução.${Color_Off}"
+    Read-Host "Pressione Enter para sair"
+    Exit 1
+}
+
+# 2. Aguardar o servidor UNO ficar pronto
+Write-Step "Aguardando o servidor UNO (pode levar um minuto)" 2 4
+$maxRetries = 30
+$retryCount = 0
+$serverUp = $false
+while ($retryCount -lt $maxRetries -and -not $serverUp) {
+    try {
+        $response = Invoke-WebRequest -Uri "http://localhost:8000" -UseBasicParsing -TimeoutSec 2
+        if ($response.StatusCode -eq 200) {
+            $serverUp = $true
+        }
+    } catch {
+        # Ignora o erro e tenta novamente
+    }
+    if (-not $serverUp) {
+        Start-Sleep -Seconds 2
+        $retryCount++
+    }
+}
+
+if (-not $serverUp) {
+    Write-Host "${Color_Red}O servidor UNO não iniciou. Execute 'docker compose logs uno' para ver os detalhes do erro.${Color_Off}"
+    Read-Host "Pressione Enter para sair"
+    Exit 1
+}
+
+# 3. Obter a URL do Cloudflare Tunnel
+Write-Step "Obtendo o link para o jogo online" 3 4
+$tunnelUrl = $null
+$maxRetriesTunnel = 20
+$retryCountTunnel = 0
+while ($null -eq $tunnelUrl -and $retryCountTunnel -lt $maxRetriesTunnel) {
+    $logs = docker compose logs tunnel 2>&1 | ForEach-Object { $_ } # Captura stderr e stdout
+    $tunnelUrl = $logs | Select-String -Pattern 'https?://[a-zA-Z0-9-]+\.trycloudflare\.com' | ForEach-Object { $_.Matches.Value } | Select-Object -First 1
+    
+    if ($null -eq $tunnelUrl) {
+        Start-Sleep -Seconds 3
+        $retryCountTunnel++
+    }
+}
+
+if ($null -eq $tunnelUrl) {
+    Write-Host "${Color_Red}Não foi possível obter a URL do túnel. Execute 'docker compose logs tunnel' para diagnosticar.${Color_Off}"
+    Read-Host "Pressione Enter para sair"
+    Exit 1
+}
+
+# 4. Abrir o navegador e exibir mensagem final
+Write-Step "Abrindo o jogo no seu navegador" 4 4
+Start-Process "$tunnelUrl/projects/uno/"
+
+Write-Host
+Write-Host "${Color_Green}===================================================${Color_Off}"
+Write-Host "${Color_Green} SUCESSO! O JOGO ESTÁ PRONTO PARA JOGAR. ${Color_Off}"
+Write-Host "${Color_Green}===================================================${Color_Off}"
+Write-Host
+Write-Host "${Color_Blue}Link para compartilhar com amigos:${Color_Off} ${tunnelUrl}/projects/uno/"
+Write-Host
+Write-Host "Você pode fechar esta janela quando terminar de jogar."
+Write-Host "Os servidores continuarão rodando em segundo plano."
+Write-Host "Para pará-los, execute o script ${Color_Yellow}stop-uno-online.bat${Color_Off}."
+Write-Host
+
+Read-Host "Pressione Enter para fechar esta janela de inicialização"
 $ErrorActionPreference = 'Stop'
 
 # Evita que mensagens informativas de stderr (ex.: docker build) parem o script.

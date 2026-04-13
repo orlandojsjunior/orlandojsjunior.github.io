@@ -1,3 +1,2 @@
 @echo off
-title UNO Online - Inicializando
-powershell -NoProfile -ExecutionPolicy Bypass -NoExit -File "%~dp0start-uno-online.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0\start-uno-online.ps1"
