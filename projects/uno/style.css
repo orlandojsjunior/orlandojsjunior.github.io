@@ -436,12 +436,22 @@ input {
   color: #fff;
   font-weight: 900;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.color-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.color-btn:active {
+  transform: scale(0.95);
 }
 
 .color-btn.red { background: #dc2626; }
 .color-btn.green { background: #16a34a; }
 .color-btn.blue { background: #2563eb; }
-.color-btn.yellow { background: #ca8a04; }
+.color-btn.yellow { background: #ca8a04; color: #000; font-weight: 900; }
 
 @media (min-width: 900px) {
   .board {

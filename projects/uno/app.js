@@ -724,6 +724,7 @@ ui.myCards.addEventListener("click", (event) => {
 });
 
 ui.colorPicker.addEventListener("click", (event) => {
+  event.stopPropagation();
   const button = event.target.closest(".color-btn");
   if (!button || !app.waitingCardId) {
     return;
@@ -744,6 +745,14 @@ ui.colorPicker.addEventListener("click", (event) => {
       cardId,
       chosenColor
     });
+  }
+});
+
+// Fechar modal ao clicar fora dos botões
+ui.colorPicker.addEventListener("click", (event) => {
+  if (event.target === ui.colorPicker) {
+    ui.colorPicker.classList.add("hidden");
+    app.waitingCardId = null;
   }
 });
 
