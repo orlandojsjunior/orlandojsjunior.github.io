@@ -1,4 +1,10 @@
 // ===== CONFIGURAÇÃO DE SOM =====
+const GAME_VERSION = "1.1.0";
+const GAME_RELEASES = {
+  "1.1.0": "Color picker corrigido; cor escolhida para WILD/W4 agora é persistida corretamente.",
+  "1.0.0": "Versao inicial do UNO pai e filho com sala por codigo."
+};
+
 const soundManager = {
   enabled: localStorage.getItem('unoSoundEnabled') !== 'false',
   
@@ -194,6 +200,10 @@ const app = {
 
 function setStatus(text) {
   ui.status.textContent = text;
+}
+
+function getVersionNotes(version) {
+  return GAME_RELEASES[version] || "Sem notas de versão registradas.";
 }
 
 function addLog(text) {
@@ -805,6 +815,11 @@ ui.selectFilho.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   themeManager.init();
   updateScoreDisplay();
+  const versionBadge = document.getElementById('versionBadge');
+  if (versionBadge) {
+    versionBadge.textContent = `v${GAME_VERSION}`;
+    versionBadge.title = `${versionBadge.textContent} - ${getVersionNotes(GAME_VERSION)}`;
+  }
   
   ui.toggleSound.addEventListener('click', () => {
     soundManager.enabled = !soundManager.enabled;
