@@ -34,6 +34,8 @@ if ($LASTEXITCODE -ne 0) {
   throw 'Falha ao iniciar os containers.'
 }
 Write-Host '      Servidor local iniciado com sucesso.' -ForegroundColor Green
+Write-Host '      Abrindo o jogo local enquanto o túnel prepara a URL pública...' -ForegroundColor Green
+Start-Process 'http://localhost:8000/projects/uno/'
 
 Write-Step 3 5 'Aguardando o túnel público do Cloudflare...'
 $publicUrl = $null
@@ -51,8 +53,8 @@ for ($i = 0; $i -lt 60 -and -not $publicUrl; $i++) {
 if (-not $publicUrl) {
   Write-Step 4 5 'Nao consegui detectar a URL pública automaticamente.' 'Yellow'
   Write-Step 5 5 'Abrindo o acesso local como fallback: http://localhost:8000/projects/uno/' 'Yellow'
-  Start-Process 'http://localhost:8000/projects/uno/'
   Write-Host '      Jogo aberto no navegador.' -ForegroundColor Green
+  Read-Host 'Pressione ENTER para fechar esta janela'
   exit 0
 }
 
@@ -60,3 +62,4 @@ Write-Step 4 5 "URL pública encontrada: $publicUrl" 'Green'
 Write-Step 5 5 'Abrindo o navegador agora...' 'Green'
 Start-Process $publicUrl
 Write-Host '      Jogo aberto no navegador.' -ForegroundColor Green
+Read-Host 'Pressione ENTER para fechar esta janela'
