@@ -19,6 +19,47 @@ function Write-Step {
   Write-Host ("      Progresso: [{0}]" -f $bar) -ForegroundColor DarkGray
 }
 
+function Wait-ServerUp {
+  param(
+    [string]$Url,
+    [int]$Attempts = 60,
+    [int]$DelaySeconds = 1
+  )
+
+  for ($i = 0; $i -lt $Attempts; $i++) {
+    try {
+      $response = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 3
+      if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 500) {
+        return $true
+      }
+    } catch {
+      # continua tentando até o timeout total
+    }
+
+    Start-Sleep -Seconds $DelaySeconds
+  }
+
+  return $false
+}
+
+function Get-TunnelUrlFromLogs {
+  param([string]$Logs)
+
+  $patterns = @(
+    'https://[a-zA-Z0-9\-\.]+\.trycloudflare\.com',
+    'https://[a-zA-Z0-9\-\.]+trycloudflare\.com'
+  )
+
+  foreach ($pattern in $patterns) {
+    $match = [regex]::Match($Logs, $pattern)
+    if ($match.Success) {
+      return $match.Value
+    }
+  }
+
+  return $null
+}
+
 Write-Host ''
 Write-Host '============================================================' -ForegroundColor DarkMagenta
 Write-Host ' UNO ONLINE - INICIANDO O JOGO EM TEMPO REAL ' -ForegroundColor Magenta
@@ -33,27 +74,35 @@ if ($LASTEXITCODE -ne 0) {
   Write-Host $composeOutput -ForegroundColor Red
   throw 'Falha ao iniciar os containers.'
 }
-Write-Host '      Servidor local iniciado com sucesso.' -ForegroundColor Green
-Write-Host '      Abrindo o jogo local enquanto o túnel prepara a URL pública...' -ForegroundColor Green
-Start-Process 'http://localhost:8000/projects/uno/'
+
+$localUrl = 'http://localhost:8000/projects/uno/'
+Write-Host '      Esperando o servidor local ficar pronto...' -ForegroundColor DarkGray
+$localReady = Wait-ServerUp -Url $localUrl -Attempts 90 -DelaySeconds 1
+if ($localReady) {
+  Write-Host '      Servidor local pronto.' -ForegroundColor Green
+  Write-Host '      Abrindo o jogo local enquanto o túnel prepara a URL pública...' -ForegroundColor Green
+  Start-Process $localUrl
+} else {
+  Write-Host '      Servidor local demorou para responder, mas vou continuar com o túnel.' -ForegroundColor Yellow
+}
 
 Write-Step 3 5 'Aguardando o túnel público do Cloudflare...'
 $publicUrl = $null
-for ($i = 0; $i -lt 60 -and -not $publicUrl; $i++) {
+for ($i = 0; $i -lt 120 -and -not $publicUrl; $i++) {
   Start-Sleep -Seconds 2
   Write-Host '      ...procurando a URL publica no log do túnel' -ForegroundColor DarkGray
   $logs = & docker compose logs tunnel 2>&1
-  $match = [regex]::Match($logs, 'https://[a-zA-Z0-9\-\.]+trycloudflare\.com')
-  if ($match.Success) {
-    $publicUrl = $match.Value
-    break
-  }
+  $publicUrl = Get-TunnelUrlFromLogs -Logs $logs
 }
 
 if (-not $publicUrl) {
   Write-Step 4 5 'Nao consegui detectar a URL pública automaticamente.' 'Yellow'
-  Write-Step 5 5 'Abrindo o acesso local como fallback: http://localhost:8000/projects/uno/' 'Yellow'
-  Write-Host '      Jogo aberto no navegador.' -ForegroundColor Green
+  if (-not $localReady) {
+    Write-Step 5 5 'Abrindo o acesso local como fallback: http://localhost:8000/projects/uno/' 'Yellow'
+    Start-Process $localUrl
+  } else {
+    Write-Step 5 5 'Mantendo o jogo local aberto. Compartilhe apenas quando a URL pública aparecer.' 'Yellow'
+  }
   Read-Host 'Pressione ENTER para fechar esta janela'
   exit 0
 }
