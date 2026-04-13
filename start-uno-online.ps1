@@ -28,7 +28,7 @@ Write-Host ''
 
 Write-Step 1 5 'Abrindo o projeto e preparando o ambiente...'
 Write-Step 2 5 'Subindo o servidor do UNO em segundo plano...'
-$composeOutput = & docker compose up -d --build 2>&1
+$composeOutput = & cmd /c "docker compose up -d --build" 2>&1
 if ($LASTEXITCODE -ne 0) {
   Write-Host $composeOutput -ForegroundColor Red
   throw 'Falha ao iniciar os containers.'
