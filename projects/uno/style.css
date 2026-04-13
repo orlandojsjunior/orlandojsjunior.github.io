@@ -161,6 +161,29 @@ input {
   font-size: 1rem;
 }
 
+.role-selection {
+  padding: 20px 0;
+}
+
+#gameSetup {
+  padding: 20px 0;
+}
+
+#gameSetup.hidden {
+  display: none;
+}
+
+#paiControls.hidden,
+#filhoControls.hidden {
+  display: none;
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
 .lobby-grid {
   margin-top: 12px;
   display: grid;

@@ -26,30 +26,39 @@
     </header>
 
     <section id="lobby" class="panel">
-      <h2>Entrar na partida</h2>
-      <label>
-        Seu nome
-        <input id="playerName" type="text" maxlength="24" placeholder="Ex: Pai" />
-      </label>
-
-      <div class="lobby-grid">
-        <div class="lobby-card">
-          <h3>Criar sala</h3>
-          <button id="createRoomBtn" class="btn primary">Criar sala</button>
-          <p class="hint">Compartilhe o codigo com seu filho para ele entrar.</p>
-        </div>
-
-        <div class="lobby-card">
-          <h3>Entrar em sala</h3>
-          <label>
-            Codigo da sala
-            <input id="roomCodeInput" type="text" maxlength="8" placeholder="ABC123" />
-          </label>
-          <button id="joinRoomBtn" class="btn">Entrar</button>
+      <h2>UNO - Pai e Filho</h2>
+      
+      <div class="role-selection" id="roleSelection">
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 700;">Qual é o seu papel?</p>
+        <div class="lobby-grid">
+          <button id="selectPai" class="btn primary" style="padding: 20px; font-size: 1.1rem;">👨‍👦 Sou o PAI<br><small style="font-size: 0.8rem;">Criar sala</small></button>
+          <button id="selectFilho" class="btn" style="padding: 20px; font-size: 1.1rem;">👦 Sou o FILHO<br><small style="font-size: 0.8rem;">Entrar em sala</small></button>
         </div>
       </div>
 
-      <p id="status" class="status">Preencha seu nome para comecar.</p>
+      <div id="gameSetup" class="hidden">
+        <label>
+          Seu nome
+          <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome" />
+        </label>
+
+        <div id="paiControls" class="hidden">
+          <h3 style="color: var(--accent); margin-top: 20px;">🎮 Criar Sala (PAI)</h3>
+          <p style="color: var(--muted); margin-bottom: 15px;">Crie uma sala e compartilhe o código com seu filho.</p>
+          <button id="createRoomBtn" class="btn primary" style="width: 100%;">Criar Sala</button>
+        </div>
+
+        <div id="filhoControls" class="hidden">
+          <h3 style="color: var(--secondary); margin-top: 20px;">🎮 Entrar em Sala (FILHO)</h3>
+          <label>
+            Código da sala (do seu pai)
+            <input id="roomCodeInput" type="text" maxlength="8" placeholder="ABC123" />
+          </label>
+          <button id="joinRoomBtn" class="btn primary" style="width: 100%; margin-top: 10px;">Entrar na Sala</button>
+        </div>
+      </div>
+
+      <p id="status" class="status">Selecione seu papel para começar.</p>
     </section>
 
     <section id="game" class="hidden">

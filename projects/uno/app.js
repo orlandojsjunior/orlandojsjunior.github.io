@@ -148,6 +148,12 @@ const VALUE_LABEL = {
 const ui = {
   lobby: document.getElementById("lobby"),
   game: document.getElementById("game"),
+  roleSelection: document.getElementById("roleSelection"),
+  gameSetup: document.getElementById("gameSetup"),
+  paiControls: document.getElementById("paiControls"),
+  filhoControls: document.getElementById("filhoControls"),
+  selectPai: document.getElementById("selectPai"),
+  selectFilho: document.getElementById("selectFilho"),
   playerName: document.getElementById("playerName"),
   roomCodeInput: document.getElementById("roomCodeInput"),
   createRoomBtn: document.getElementById("createRoomBtn"),
@@ -178,6 +184,7 @@ const app = {
   conn: null,
   isHost: false,
   myIndex: -1,
+  myRole: null, // 'pai' ou 'filho'
   myName: "",
   roomCode: "",
   hostState: null,
@@ -754,6 +761,25 @@ ui.colorPicker.addEventListener("click", (event) => {
     ui.colorPicker.classList.add("hidden");
     app.waitingCardId = null;
   }
+});
+
+// ===== SELEÇÃO DE PAPEL (PAI / FILHO) =====
+ui.selectPai.addEventListener('click', () => {
+  app.myRole = 'pai';
+  ui.roleSelection.classList.add('hidden');
+  ui.gameSetup.classList.remove('hidden');
+  ui.paiControls.classList.remove('hidden');
+  ui.filhoControls.classList.add('hidden');
+  setStatus('Você é o PAI. Digite seu nome e crie a sala.');
+});
+
+ui.selectFilho.addEventListener('click', () => {
+  app.myRole = 'filho';
+  ui.roleSelection.classList.add('hidden');
+  ui.gameSetup.classList.remove('hidden');
+  ui.paiControls.classList.add('hidden');
+  ui.filhoControls.classList.remove('hidden');
+  setStatus('Você é o FILHO. Digite seu nome e entre no código da sala do seu pai.');
 });
 
 // ===== INICIALIZAÇÃO =====
