@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNO Online - Pai e Filho</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+
+  <main class="app">
+    <header class="topbar">
+      <h1>UNO ONLINE</h1>
+      <p>Versao para 2 jogadores com codigo de sala</p>
+    </header>
+
+    <section id="lobby" class="panel">
+      <h2>Entrar na partida</h2>
+      <label>
+        Seu nome
+        <input id="playerName" type="text" maxlength="24" placeholder="Ex: Pai" />
+      </label>
+
+      <div class="lobby-grid">
+        <div class="lobby-card">
+          <h3>Criar sala</h3>
+          <button id="createRoomBtn" class="btn primary">Criar sala</button>
+          <p class="hint">Compartilhe o codigo com seu filho para ele entrar.</p>
+        </div>
+
+        <div class="lobby-card">
+          <h3>Entrar em sala</h3>
+          <label>
+            Codigo da sala
+            <input id="roomCodeInput" type="text" maxlength="8" placeholder="ABC123" />
+          </label>
+          <button id="joinRoomBtn" class="btn">Entrar</button>
+        </div>
+      </div>
+
+      <p id="status" class="status">Preencha seu nome para comecar.</p>
+    </section>
+
+    <section id="game" class="hidden">
+      <div class="room-info panel slim">
+        <div>
+          Sala: <strong id="roomCode">-</strong>
+        </div>
+        <div id="connectionLabel">Conectando...</div>
+      </div>
+
+      <div class="board">
+        <div class="panel opponent-panel">
+          <div class="player-line">
+            <strong id="opponentName">Adversario</strong>
+            <span>Cartas: <b id="opponentCount">0</b></span>
+          </div>
+          <div id="opponentCards" class="cards-row cards-back"></div>
+        </div>
+
+        <div class="center-area panel">
+          <div class="pile" id="discardPile"></div>
+          <div class="center-actions">
+            <button id="drawBtn" class="btn">Comprar 1</button>
+            <button id="unoBtn" class="btn danger">UNO!</button>
+          </div>
+          <div id="activeColor" class="active-color">Cor ativa: -</div>
+          <div id="turnLabel" class="turn">Aguardando...</div>
+        </div>
+
+        <div class="panel me-panel">
+          <div class="player-line">
+            <strong id="myName">Voce</strong>
+            <span>Cartas: <b id="myCount">0</b></span>
+          </div>
+          <div id="myCards" class="cards-row"></div>
+        </div>
+      </div>
+
+      <section class="panel log-panel">
+        <h3>Eventos</h3>
+        <div id="log"></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="colorPicker" class="modal hidden">
+    <div class="modal-content">
+      <h3>Escolha a cor</h3>
+      <div class="color-grid">
+        <button data-color="R" class="color-btn red">Vermelho</button>
+        <button data-color="G" class="color-btn green">Verde</button>
+        <button data-color="B" class="color-btn blue">Azul</button>
+        <button data-color="Y" class="color-btn yellow">Amarelo</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
