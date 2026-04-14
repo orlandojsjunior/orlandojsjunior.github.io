@@ -57,6 +57,7 @@
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://images.credly.com" crossorigin>
 	<link
 		href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;700;800&display=swap"
 		rel="stylesheet"
@@ -151,7 +152,7 @@
 						até o desenvolvimento back-end e front-end, preparando-me para criar soluções digitais completas e eficientes.
 					</p>
 					<div class="diploma-view">
-						<img src="assets/diplomas/diploma-frente-thumbnail.png" alt="Diploma de Graduacao - Clique para ampliar" id="diploma-trigger" class="diploma-thumbnail">
+						<img src="assets/diplomas/diploma-frente-thumbnail.png" alt="Diploma de Graduacao - Clique para ampliar" id="diploma-trigger" class="diploma-thumbnail" loading="lazy" decoding="async" fetchpriority="low" width="200" height="100">
 					</div>
 					<p class="evidence">✓ Curso concluído com sucesso</p>
 				</article>
@@ -200,6 +201,11 @@
 						class="cert-badge"
 						src="https://images.credly.com/images/44e2c252-5d19-4574-9646-005f7225bf53/image.png"
 						alt="Badge AWS re/Start Graduate"
+						loading="lazy"
+						decoding="async"
+						fetchpriority="low"
+						width="84"
+						height="84"
 					>
 					<small>Amazon Web Services Training & Certification</small>
 					<h3>AWS re/Start Graduate</h3>
@@ -217,6 +223,11 @@
 						class="cert-badge"
 						src="https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png"
 						alt="Badge AWS Certified Cloud Practitioner"
+						loading="lazy"
+						decoding="async"
+						fetchpriority="low"
+						width="84"
+						height="84"
 					>
 					<small>Amazon Web Services Training & Certification</small>
 					<h3>AWS Certified Cloud Practitioner</h3>
@@ -518,7 +529,7 @@
 	<!-- Modal do Diploma -->
 	<div id="diploma-modal" class="modal">
 		<span class="modal-close">&times;</span>
-		<img class="modal-content" id="diploma-img-full">
+		<img class="modal-content" id="diploma-img-full" decoding="async" loading="eager">
 		<div class="modal-actions">
 			<button type="button" id="diploma-toggle-side" class="btn-diploma-side">Ver verso</button>
 		</div>
