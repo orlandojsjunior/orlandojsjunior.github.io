@@ -426,14 +426,30 @@ h2 {
 
 .profile-card h3 {
 	font-weight: var(--fw-title);
-	font-size: 1.2rem;
+	font-size: 1.28rem;
 	line-height: var(--lh-heading);
+	margin: 2px 0 0;
 }
 
 .profile-card p {
 	font-size: 0.95rem;
 	color: #d7e0ee;
 	line-height: 1.78;
+}
+
+.profile-line {
+	margin: -2px 0 0;
+	font-size: 0.9rem;
+	line-height: 1.4;
+	letter-spacing: 0.01em;
+	color: #e5efff;
+}
+
+.profile-summary {
+	margin: 4px 0 0;
+	padding-top: 10px;
+	border-top: 1px solid rgba(255, 255, 255, 0.14);
+	color: #d0dced;
 }
 
 .about-content {
@@ -1100,6 +1116,15 @@ html[data-theme="light"] .proof-card span {
 
 html[data-theme="light"] .profile-card p {
 	color: #2e4765;
+}
+
+html[data-theme="light"] .profile-line {
+	color: #234261;
+}
+
+html[data-theme="light"] .profile-summary {
+	border-top-color: rgba(31, 49, 73, 0.16);
+	color: #34516f;
 }
 
 html[data-theme="light"] .avatar {
