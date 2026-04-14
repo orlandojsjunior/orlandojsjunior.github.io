@@ -333,26 +333,107 @@ h2 {
 
 .projects {
 	display: grid;
-	gap: 14px;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 16px;
 }
 
 .project {
 	border: 1px solid rgba(255, 255, 255, 0.13);
-	border-left: 4px solid var(--primary);
 	border-radius: 14px;
 	padding: 18px;
 	background: rgba(13, 20, 34, 0.84);
 	display: grid;
-	gap: 10px;
+	gap: 12px;
+	transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project:hover {
+	transform: translateY(-4px);
+	border-color: rgba(39, 210, 111, 0.45);
+	box-shadow: 0 20px 36px rgba(0, 0, 0, 0.25);
+}
+
+.project-thumb {
+	height: 116px;
+	border-radius: 10px;
+	padding: 12px;
+	display: flex;
+	align-items: flex-end;
+	font-family: "Bebas Neue", sans-serif;
+	font-size: 1.2rem;
+	letter-spacing: 0.06em;
+	color: #f5f9ff;
+	background:
+		radial-gradient(circle at 12% 18%, rgba(39, 210, 111, 0.4), transparent 36%),
+		radial-gradient(circle at 88% 12%, rgba(0, 180, 216, 0.42), transparent 32%),
+		linear-gradient(140deg, rgba(20, 35, 56, 0.95), rgba(10, 18, 30, 0.96));
+}
+
+.project small {
+	color: #8fb5ff;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-size: 0.7rem;
+	font-weight: 700;
 }
 
 .project h3 {
 	font-size: 1.08rem;
+	line-height: 1.25;
 }
 
 .project p {
 	color: var(--muted);
 	font-size: 0.96rem;
+}
+
+.project-stack {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.stack-chip {
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: #dfe8f8;
+}
+
+.project-actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.btn-project {
+	text-decoration: none;
+	font-weight: 800;
+	font-size: 0.86rem;
+	padding: 9px 12px;
+	border-radius: 10px;
+	background: linear-gradient(120deg, #39e984, #18c0df);
+	color: #032112;
+	border: 1px solid transparent;
+	transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.btn-project:hover {
+	filter: brightness(1.06);
+	transform: translateY(-1px);
+}
+
+.btn-project-secondary {
+	background: rgba(255, 255, 255, 0.06);
+	border-color: rgba(255, 255, 255, 0.24);
+	color: #dff2ff;
+}
+
+.btn-project-secondary:hover {
+	background: rgba(255, 255, 255, 0.12);
 }
 
 .project a {
