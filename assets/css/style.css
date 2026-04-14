@@ -145,29 +145,30 @@ nav {
 }
 
 .theme-btn {
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	background: rgba(255, 255, 255, 0.06);
+	border: 0;
+	background: transparent;
 	color: var(--text);
-	padding: 9px;
-	border-radius: 999px;
+	padding: 0;
+	border-radius: 0;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 42px;
-	height: 42px;
+	min-width: 28px;
+	min-height: 28px;
+	line-height: 1;
 	cursor: pointer;
-	transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+	transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .theme-btn:hover {
-	background: rgba(255, 255, 255, 0.12);
-	transform: translateY(-1px);
+	transform: translateY(-1px) scale(1.08);
+	filter: brightness(1.08);
 }
 
 .theme-icon {
-	width: 1.15rem;
+	width: auto;
 	text-align: center;
-	font-size: 1.02rem;
+	font-size: 1.48rem;
 }
 
 .theme-icon.is-sun {
@@ -178,9 +179,12 @@ nav {
 	color: #dbe7ff;
 }
 
-html[data-theme="light"] .theme-btn {
-	border-color: rgba(26, 37, 55, 0.22);
-	background: rgba(26, 37, 55, 0.06);
+html[data-theme="light"] .theme-icon.is-moon {
+	color: #000;
+}
+
+html[data-theme="light"] .theme-icon.is-sun {
+	color: #000;
 }
 
 .logo {
@@ -197,14 +201,14 @@ html[data-theme="light"] .theme-btn {
 
 .nav-links {
 	display: flex;
-	gap: 14px;
-	flex-wrap: wrap;
+	gap: 12px;
+	flex-wrap: nowrap;
+	align-items: center;
 	justify-content: flex-end;
 }
 
 .nav-links .theme-btn {
-	order: 999;
-	margin-left: 4px;
+	margin-left: 2px;
 }
 
 .nav-links a {
@@ -1267,12 +1271,12 @@ html[data-theme="light"] .chip.verified {
 }
 
 .theme-btn {
-	border-color: var(--modern-border);
-	background: var(--modern-panel-soft);
+	border: 0;
+	background: transparent;
 }
 
 html[data-theme="light"] .theme-btn {
-	box-shadow: 0 6px 18px rgba(30, 64, 175, 0.1);
+	box-shadow: none;
 }
 
 html[data-theme="light"] .proof-card strong {
@@ -1362,8 +1366,8 @@ html[data-theme="light"] .nav-links a:hover {
 }
 
 html[data-theme="light"] .theme-btn {
-	background: rgba(236, 242, 250, 0.88);
-	box-shadow: 0 4px 14px rgba(31, 49, 73, 0.1);
+	background: transparent;
+	box-shadow: none;
 }
 
 html[data-theme="light"] .stack-chip,
@@ -1409,11 +1413,13 @@ html[data-theme="light"] footer {
 
 	.nav-links {
 		justify-content: flex-start;
+		flex-wrap: wrap;
+		gap: 10px;
 	}
 
 	.theme-btn {
-		padding: 9px;
-		min-width: 42px;
+		padding: 0;
+		min-width: 0;
 		justify-content: center;
 	}
 
