@@ -1,13 +1,24 @@
 :root {
+	/* Paleta oficial de branding */
+	--brand-emerald-500: #27d26f;
+	--brand-emerald-300: #39e984;
+	--brand-cyan-500: #00b4d8;
+	--brand-cyan-400: #18c0df;
+	--brand-navy-900: #0d1422;
+	--brand-navy-700: #1f3048;
+	--brand-slate-100: #f3f6fb;
+	--brand-amber-400: #fbbf24;
+	--brand-focus-ring: rgba(57, 233, 132, 0.22);
+
 	--bg: #0c1018;
 	--bg-soft: #111827;
 	--surface: rgba(17, 24, 39, 0.65);
-	--text: #f3f6fb;
+	--text: var(--brand-slate-100);
 	--muted: #c7d3e6;
 	--line: rgba(255, 255, 255, 0.15);
-	--primary: #27d26f;
-	--secondary: #00b4d8;
-	--accent: #fbbf24;
+	--primary: var(--brand-emerald-500);
+	--secondary: var(--brand-cyan-500);
+	--accent: var(--brand-amber-400);
 	--radius: 18px;
 	--shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
 	--max: 1120px;
@@ -75,9 +86,9 @@ html[data-theme="light"] body {
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible {
-	outline: 3px solid #39e984;
+	outline: 3px solid var(--brand-emerald-300);
 	outline-offset: 3px;
-	box-shadow: 0 0 0 5px rgba(57, 233, 132, 0.22);
+	box-shadow: 0 0 0 5px var(--brand-focus-ring);
 }
 
 .grid-overlay {
@@ -191,7 +202,7 @@ html[data-theme="light"] .theme-btn {
 
 .lang-btn.is-active {
 	color: #072010;
-	background: linear-gradient(120deg, #39e984, #18c0df);
+	background: linear-gradient(120deg, var(--brand-emerald-300), var(--brand-cyan-400));
 	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
 }
 
@@ -247,7 +258,7 @@ html[data-theme="light"] .lang-btn:hover {
 
 .nav-links a.active {
 	color: #061d12;
-	background: linear-gradient(120deg, #39e984, #18c0df);
+	background: linear-gradient(120deg, var(--brand-emerald-300), var(--brand-cyan-400));
 	border-color: transparent;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
@@ -356,7 +367,7 @@ h1 {
 
 .btn-primary {
 	color: #072010;
-	background: linear-gradient(120deg, #39e984, #18c0df);
+	background: linear-gradient(120deg, var(--brand-emerald-300), var(--brand-cyan-400));
 }
 
 .btn-secondary {
@@ -413,7 +424,7 @@ h2 {
 	font-size: 2.1rem;
 	letter-spacing: 0.08em;
 	color: #03270f;
-	background: linear-gradient(135deg, #41e68a, #21b8df);
+	background: linear-gradient(135deg, var(--brand-emerald-300), var(--brand-cyan-400));
 	box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
 }
 
@@ -626,7 +637,7 @@ html[data-theme="light"] .presence-logo {
 	font-size: 0.86rem;
 	padding: 9px 12px;
 	border-radius: 10px;
-	background: linear-gradient(120deg, #39e984, #18c0df);
+	background: linear-gradient(120deg, var(--brand-emerald-300), var(--brand-cyan-400));
 	color: #032112;
 	border: 1px solid transparent;
 	transition: filter 0.2s ease, transform 0.2s ease;
