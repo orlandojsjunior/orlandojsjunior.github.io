@@ -144,7 +144,7 @@ nav {
 	gap: 20px;
 }
 
-.language-switch-wrap {
+.theme-switch-wrap {
 	display: flex;
 	justify-content: flex-end;
 	margin-top: 10px;
@@ -182,54 +182,6 @@ nav {
 html[data-theme="light"] .theme-btn {
 	border-color: rgba(26, 37, 55, 0.22);
 	background: rgba(26, 37, 55, 0.06);
-}
-
-.language-switch {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	padding: 4px;
-	border-radius: 999px;
-	border: 1px solid rgba(255, 255, 255, 0.18);
-	background: rgba(255, 255, 255, 0.06);
-}
-
-.lang-btn {
-	border: 0;
-	background: transparent;
-	color: #d2deef;
-	padding: 7px 10px;
-	border-radius: 999px;
-	font-size: 0.75rem;
-	font-weight: 800;
-	letter-spacing: 0.04em;
-	cursor: pointer;
-	transition: 0.2s ease;
-}
-
-.lang-btn:hover {
-	color: #f4f8ff;
-	background: rgba(255, 255, 255, 0.08);
-}
-
-.lang-btn.is-active {
-	color: #072010;
-	background: linear-gradient(120deg, var(--brand-emerald-300), var(--brand-cyan-400));
-	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
-}
-
-html[data-theme="light"] .language-switch {
-	border-color: rgba(26, 37, 55, 0.22);
-	background: rgba(26, 37, 55, 0.06);
-}
-
-html[data-theme="light"] .lang-btn {
-	color: #314766;
-}
-
-html[data-theme="light"] .lang-btn:hover {
-	color: #1b2a40;
-	background: rgba(26, 37, 55, 0.08);
 }
 
 .logo {
@@ -1016,7 +968,6 @@ body.diploma-guard * {
 	.btn-project,
 	.btn-diploma,
 	.theme-btn,
-	.lang-btn,
 	.nav-links a,
 	.proof-card,
 	.card,
@@ -1311,14 +1262,12 @@ html[data-theme="light"] .chip.verified {
 	border-color: rgba(24, 140, 80, 0.4);
 }
 
-.theme-btn,
-.language-switch {
+.theme-btn {
 	border-color: var(--modern-border);
 	background: var(--modern-panel-soft);
 }
 
-html[data-theme="light"] .theme-btn,
-html[data-theme="light"] .language-switch {
+html[data-theme="light"] .theme-btn {
 	box-shadow: 0 6px 18px rgba(30, 64, 175, 0.1);
 }
 
@@ -1408,8 +1357,7 @@ html[data-theme="light"] .nav-links a:hover {
 	border-color: rgba(36, 95, 159, 0.2);
 }
 
-html[data-theme="light"] .theme-btn,
-html[data-theme="light"] .language-switch {
+html[data-theme="light"] .theme-btn {
 	background: rgba(236, 242, 250, 0.88);
 	box-shadow: 0 4px 14px rgba(31, 49, 73, 0.1);
 }
@@ -1455,7 +1403,7 @@ html[data-theme="light"] footer {
 		align-items: flex-start;
 	}
 
-	.language-switch-wrap {
+	.theme-switch-wrap {
 		justify-content: flex-start;
 		margin-top: 8px;
 	}
