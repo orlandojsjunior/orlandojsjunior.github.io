@@ -98,6 +98,40 @@ nav {
 	gap: 20px;
 }
 
+.language-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-btn {
+	border: 0;
+	background: transparent;
+	color: #d2deef;
+	padding: 7px 10px;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+.lang-btn:hover {
+	color: #f4f8ff;
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn.is-active {
+	color: #072010;
+	background: linear-gradient(120deg, #39e984, #18c0df);
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
 .logo {
 	font-family: "Bebas Neue", sans-serif;
 	letter-spacing: 0.1em;
@@ -818,6 +852,10 @@ body.diploma-guard * {
 	nav {
 		flex-direction: column;
 		align-items: flex-start;
+	}
+
+	.language-switch {
+		margin-top: 4px;
 	}
 
 	.hero {

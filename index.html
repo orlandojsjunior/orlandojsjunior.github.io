@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-lang="pt">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,7 +66,7 @@
 </head>
 
 <body>
-	<a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
+	<a class="skip-link" href="#conteudo-principal" data-i18n="skipToContent">Pular para o conteúdo principal</a>
 	<div class="grid-overlay" aria-hidden="true"></div>
 
 	<header>
@@ -74,14 +74,18 @@
 			<nav aria-label="Navegacao principal">
 				<a class="logo" href="#inicio" aria-label="Ir para o início">ORLANDO<span>.</span>JR</a>
 				<div class="nav-links">
-					<a href="#sobre">Sobre</a>
-					<a href="#graduacao">Graduação</a>
-					<a href="#posgraduacao">Pós-graduação</a>
-					<a href="#certificacoes">Certificações</a>
-					<a href="#habilidades">Habilidades</a>
-					<a href="#timeline">Timeline</a>
-					<a href="#portfolio">Portfolio</a>
-					<a href="#presenca">Presença online</a>
+					<a href="#sobre" data-i18n="navAbout">Sobre</a>
+					<a href="#graduacao" data-i18n="navGraduation">Graduação</a>
+					<a href="#posgraduacao" data-i18n="navPostgrad">Pós-graduação</a>
+					<a href="#certificacoes" data-i18n="navCerts">Certificações</a>
+					<a href="#habilidades" data-i18n="navSkills">Habilidades</a>
+					<a href="#timeline" data-i18n="navTimeline">Timeline</a>
+					<a href="#portfolio" data-i18n="navPortfolio">Portfolio</a>
+					<a href="#presenca" data-i18n="navPresence">Presença online</a>
+				</div>
+				<div class="language-switch" aria-label="Seletor de idioma">
+					<button type="button" class="lang-btn is-active" data-lang-option="pt" aria-pressed="true">PT</button>
+					<button type="button" class="lang-btn" data-lang-option="en" aria-pressed="false">EN</button>
 				</div>
 			</nav>
 		</div>
@@ -89,16 +93,16 @@
 
 	<main class="container" id="conteudo-principal" tabindex="-1">
 		<section class="hero" id="inicio">
-			<span class="tag">Solucoes em IA, Compliance, LGPD e Desenvolvimento Web</span>
+			<span class="tag" data-i18n="heroTag">Solucoes em IA, Compliance, LGPD e Desenvolvimento Web</span>
 			<h1>ORLANDO JUNIOR</h1>
-			<p>
+			<p data-i18n="heroIntro">
 				Arquiteto soluções digitais seguras e escaláveis para desafios reais de negócio e governança.
 			</p>
-			<p class="hero-subtitle">
+			<p class="hero-subtitle" data-i18n="heroSubtitle">
 				17+ anos em tecnologia, unindo experiência em infraestrutura de TI com atuação atual em IA, Compliance, LGPD e desenvolvimento web.
 			</p>
 			<div class="hero-actions">
-				<a class="btn btn-primary" href="https://www.linkedin.com/in/orlandojsjunior/" target="_blank" rel="noopener noreferrer" aria-label="Falar no LinkedIn (abre em nova aba)">Falar no LinkedIn</a>
+				<a class="btn btn-primary" href="https://www.linkedin.com/in/orlandojsjunior/" target="_blank" rel="noopener noreferrer" aria-label="Falar no LinkedIn (abre em nova aba)" data-i18n="heroCta">Falar no LinkedIn</a>
 			</div>
 		</section>
 
@@ -106,25 +110,25 @@
 			<div class="proof-grid">
 				<article class="proof-card">
 					<strong>17+</strong>
-					<span>Anos de experiência em tecnologia</span>
+					<span data-i18n="proofExp">Anos de experiência em tecnologia</span>
 				</article>
 				<article class="proof-card">
 					<strong>6</strong>
-					<span>Projetos publicados em produção</span>
+					<span data-i18n="proofProjects">Projetos publicados em produção</span>
 				</article>
 				<article class="proof-card">
 					<strong>2</strong>
-					<span>Certificações internacionais AWS</span>
+					<span data-i18n="proofCerts">Certificações internacionais AWS</span>
 				</article>
 				<article class="proof-card">
 					<strong>195h+</strong>
-					<span>Formação complementar em dados e desenvolvimento</span>
+					<span data-i18n="proofHours">Formação complementar em dados e desenvolvimento</span>
 				</article>
 			</div>
 		</section>
 
 		<section id="sobre">
-			<h2>Sobre Mim</h2>
+			<h2 data-i18n="aboutTitle">Sobre Mim</h2>
 			<div class="about-grid">
 				<article class="profile-card">
 					<div class="avatar" aria-hidden="true">OJ</div>
@@ -156,8 +160,8 @@
 		</section>
 
 		<section id="graduacao">
-			<h2>Graduacao</h2>
-			<p class="section-intro">
+			<h2 data-i18n="graduationTitle">Graduacao</h2>
+			<p class="section-intro" data-i18n="graduationIntro">
 				Formação académica concluída que sustenta minha atuação técnica em desenvolvimento de sistemas,
 				infraestrutura e operações de TI.
 			</p>
@@ -177,14 +181,14 @@
 					<div class="diploma-view">
 						<img src="assets/diplomas/diploma-frente-thumbnail.png" alt="Diploma de Graduacao - Clique para ampliar" id="diploma-trigger" class="diploma-thumbnail" loading="lazy" decoding="async" fetchpriority="low" width="200" height="100" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="diploma-modal">
 					</div>
-					<p class="evidence">✓ Curso concluído com sucesso</p>
+					<p class="evidence" data-i18n="graduationEvidence">✓ Curso concluído com sucesso</p>
 				</article>
 			</div>
 		</section>
 
 		<section id="posgraduacao">
-			<h2>Pos-graduacao</h2>
-			<p class="section-intro">
+			<h2 data-i18n="postgradTitle">Pos-graduacao</h2>
+			<p class="section-intro" data-i18n="postgradIntro">
 				Especializacao em andamento com foco em cloud computing e inteligencia artificial.
 			</p>
 			<div class="cards">
@@ -212,7 +216,7 @@
 		</section>
 
 		<section id="certificacoes">
-			<h2>Certificacoes de Nivel Internacional</h2>
+			<h2 data-i18n="certificationsTitle">Certificacoes de Nivel Internacional</h2>
 			<p class="section-intro">
 					Certificacoes internacionais com validacao publica, emitidas por Amazon Web Services.
 					<strong>Nota:</strong> Combinam formacao pratica em desenvolvimento de habilidades (AWS re/Start) com certificacao oficial validada
@@ -266,7 +270,7 @@
 		</section>
 
 		<section id="habilidades">
-			<h2>Habilidades Técnicas</h2>
+			<h2 data-i18n="skillsTitle">Habilidades Técnicas</h2>
 			<p class="section-intro">
 				Competências técnicas consolidadas através de experiência profissional, certificações internacionais
 				e formações contínuas em cloud computing, dados e desenvolvimento.
@@ -351,7 +355,7 @@
 		</section>
 
 		<section id="timeline">
-			<h2>Experiência Profissional</h2>
+			<h2 data-i18n="timelineTitle">Experiência Profissional</h2>
 			<p class="section-intro">
 				Carreira consolidada com 17+ anos em tecnologia, infraestrutura e gestão,
 				atualmente migrando para especialização em cloud computing e dados.
@@ -408,7 +412,7 @@
 		</section>
 
 		<section id="presenca">
-			<h2>Presenca Online</h2>
+			<h2 data-i18n="presenceTitle">Presenca Online</h2>
 			<p class="section-intro">
 				Me acompanhe nos canais abaixo para ver codigo, certificacoes, formacoes e atualizacoes da minha jornada.
 			</p>
@@ -441,7 +445,7 @@
 		</section>
 
 		<section id="portfolio">
-			<h2>Portfolio</h2>
+			<h2 data-i18n="portfolioTitle">Portfolio</h2>
 			<p class="section-intro">
 				Projetos publicados em producao e repositorios publicos no GitHub demonstrando aplicacao pratica de tecnologia em contextos reais.
 			</p>
@@ -545,16 +549,16 @@
 		</section>
 
 		<footer>
-			<p>Site pessoal e portfolio - Orlando Junior</p>
+			<p data-i18n="footerText">Site pessoal e portfolio - Orlando Junior</p>
 		</footer>
 	</main>
 
 	<!-- Modal do Diploma -->
 	<div id="diploma-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-caption" aria-hidden="true">
-		<button id="diploma-close" class="modal-close" type="button" aria-label="Fechar visualização do diploma">&times;</button>
+		<button id="diploma-close" class="modal-close" type="button" aria-label="Fechar visualização do diploma" data-i18n-aria-label="modalClose">&times;</button>
 		<img class="modal-content" id="diploma-img-full" decoding="async" loading="eager" alt="">
 		<div class="modal-actions">
-			<button type="button" id="diploma-toggle-side" class="btn-diploma-side" aria-label="Alternar entre frente e verso do diploma">Ver verso</button>
+			<button type="button" id="diploma-toggle-side" class="btn-diploma-side" aria-label="Alternar entre frente e verso do diploma" data-i18n-aria-label="modalToggle">Ver verso</button>
 		</div>
 		<div id="modal-caption"></div>
 	</div>
