@@ -13,6 +13,16 @@
 	--max: 1120px;
 }
 
+html[data-theme="light"] {
+	--bg: #f4f8ff;
+	--bg-soft: #e9eef8;
+	--surface: rgba(255, 255, 255, 0.88);
+	--text: #1a2537;
+	--muted: #405775;
+	--line: rgba(26, 37, 55, 0.2);
+	--shadow: 0 20px 48px rgba(24, 50, 84, 0.16);
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -33,6 +43,13 @@ body {
 		linear-gradient(180deg, #070b12 0%, #0d1422 52%, #0b1018 100%);
 	line-height: 1.6;
 	overflow-x: hidden;
+}
+
+html[data-theme="light"] body {
+	background:
+		radial-gradient(circle at 12% 9%, rgba(39, 210, 111, 0.14), transparent 42%),
+		radial-gradient(circle at 88% 10%, rgba(0, 180, 216, 0.14), transparent 44%),
+		linear-gradient(180deg, #f5f8ff 0%, #edf3ff 52%, #e9f0fc 100%);
 }
 
 .skip-link {
@@ -91,6 +108,11 @@ header {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+html[data-theme="light"] header {
+	background: rgba(239, 245, 255, 0.85);
+	border-bottom: 1px solid rgba(26, 37, 55, 0.1);
+}
+
 nav {
 	display: flex;
 	justify-content: space-between;
@@ -102,6 +124,40 @@ nav {
 	display: flex;
 	justify-content: flex-end;
 	margin-top: 10px;
+	gap: 10px;
+	align-items: center;
+}
+
+.theme-btn {
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	background: rgba(255, 255, 255, 0.06);
+	color: var(--text);
+	padding: 9px 12px;
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-btn:hover {
+	background: rgba(255, 255, 255, 0.12);
+	transform: translateY(-1px);
+}
+
+.theme-icon {
+	width: 1.1rem;
+	text-align: center;
+	font-size: 0.92rem;
+}
+
+html[data-theme="light"] .theme-btn {
+	border-color: rgba(26, 37, 55, 0.22);
+	background: rgba(26, 37, 55, 0.06);
 }
 
 .language-switch {
@@ -136,6 +192,20 @@ nav {
 	color: #072010;
 	background: linear-gradient(120deg, #39e984, #18c0df);
 	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+html[data-theme="light"] .language-switch {
+	border-color: rgba(26, 37, 55, 0.22);
+	background: rgba(26, 37, 55, 0.06);
+}
+
+html[data-theme="light"] .lang-btn {
+	color: #314766;
+}
+
+html[data-theme="light"] .lang-btn:hover {
+	color: #1b2a40;
+	background: rgba(26, 37, 55, 0.08);
 }
 
 .logo {
@@ -837,6 +907,100 @@ body.diploma-guard * {
 	text-decoration: none;
 }
 
+html[data-theme="light"] .grid-overlay {
+	background-image:
+		linear-gradient(rgba(26, 37, 55, 0.06) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(26, 37, 55, 0.06) 1px, transparent 1px);
+}
+
+html[data-theme="light"] .nav-links a:hover {
+	border-color: rgba(26, 37, 55, 0.22);
+	background: rgba(26, 37, 55, 0.06);
+}
+
+html[data-theme="light"] .hero {
+	background: linear-gradient(120deg, rgba(39, 210, 111, 0.2), rgba(0, 180, 216, 0.12));
+}
+
+html[data-theme="light"] .tag {
+	background: rgba(26, 37, 55, 0.08);
+	border-color: rgba(26, 37, 55, 0.18);
+	color: #18324f;
+}
+
+html[data-theme="light"] h2 {
+	color: #17263b;
+}
+
+html[data-theme="light"] .hero p {
+	color: #233954;
+}
+
+html[data-theme="light"] .hero-subtitle {
+	color: #37506f;
+}
+
+html[data-theme="light"] .proof-card {
+	border-color: rgba(26, 37, 55, 0.16);
+	background: rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="light"] .proof-card strong {
+	color: #17324d;
+}
+
+html[data-theme="light"] .proof-card span {
+	color: #3f5775;
+}
+
+html[data-theme="light"] .profile-card p {
+	color: #2e4765;
+}
+
+html[data-theme="light"] .about-highlight {
+	background: rgba(255, 255, 255, 0.72);
+}
+
+html[data-theme="light"] .about-highlight strong {
+	color: #1b2f47;
+}
+
+html[data-theme="light"] .card small,
+html[data-theme="light"] .project small,
+html[data-theme="light"] .cert-item small,
+html[data-theme="light"] .timeline-item small {
+	color: #3f6ca8;
+}
+
+html[data-theme="light"] .evidence {
+	color: #114c2f;
+	background: rgba(39, 210, 111, 0.14);
+}
+
+html[data-theme="light"] .project,
+html[data-theme="light"] .cert-item,
+html[data-theme="light"] .timeline-item {
+	border-color: rgba(26, 37, 55, 0.16);
+	background: rgba(255, 255, 255, 0.92);
+}
+
+html[data-theme="light"] .stack-chip,
+html[data-theme="light"] .chip {
+	background: rgba(26, 37, 55, 0.08);
+	border-color: rgba(26, 37, 55, 0.2);
+	color: #1d3552;
+}
+
+html[data-theme="light"] .btn-project-secondary {
+	background: rgba(26, 37, 55, 0.08);
+	border-color: rgba(26, 37, 55, 0.22);
+	color: #1d3552;
+}
+
+html[data-theme="light"] footer {
+	color: #5b718d;
+}
+
 
 @keyframes reveal {
 	from {
@@ -863,6 +1027,16 @@ body.diploma-guard * {
 	.language-switch-wrap {
 		justify-content: flex-start;
 		margin-top: 8px;
+	}
+
+	.theme-btn {
+		padding: 9px;
+		min-width: 42px;
+		justify-content: center;
+	}
+
+	#theme-label {
+		display: none;
 	}
 
 	.hero {

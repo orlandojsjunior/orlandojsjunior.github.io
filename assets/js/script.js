@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	var STORAGE_KEY = "preferred-language";
+	var THEME_STORAGE_KEY = "preferred-theme";
 	var translations = {
 		pt: {
 			htmlLang: "pt-BR",
@@ -38,7 +39,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			modalCaptionBack: "Diploma de Graduacao - Verso",
 			modalShowBack: "Ver verso",
 			modalShowFront: "Ver frente",
-			clipboardProtected: "Captura de tela desabilitada nesta visualizacao."
+			clipboardProtected: "Captura de tela desabilitada nesta visualizacao.",
+			themeToLight: "Modo claro",
+			themeToDark: "Modo escuro",
+			themeToLightAria: "Ativar modo claro",
+			themeToDarkAria: "Ativar modo escuro"
 		},
 		en: {
 			htmlLang: "en",
@@ -77,12 +82,21 @@ document.addEventListener("DOMContentLoaded", function () {
 			modalCaptionBack: "Graduation Diploma - Back",
 			modalShowBack: "View back",
 			modalShowFront: "View front",
-			clipboardProtected: "Screenshot disabled in this protected view."
+			clipboardProtected: "Screenshot disabled in this protected view.",
+			themeToLight: "Light mode",
+			themeToDark: "Dark mode",
+			themeToLightAria: "Enable light mode",
+			themeToDarkAria: "Enable dark mode"
 		}
 	};
 
 	var currentLanguage = "pt";
+	var currentTheme = "dark";
 	var langButtons = Array.from(document.querySelectorAll("[data-lang-option]"));
+	var themeButton = document.getElementById("theme-toggle");
+	var themeLabel = document.getElementById("theme-label");
+	var themeIcon = document.getElementById("theme-icon");
+	var themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
 	function getText(key) {
 		var languagePack = translations[currentLanguage] || translations.pt;
@@ -125,6 +139,43 @@ document.addEventListener("DOMContentLoaded", function () {
 		} catch (error) {
 			// Ignora falha de escrita em storage restrito.
 		}
+
+		updateThemeButtonLabel();
+	}
+
+	function applyTheme(theme) {
+		if (!["dark", "light"].includes(theme)) {
+			return;
+		}
+
+		currentTheme = theme;
+		document.documentElement.setAttribute("data-theme", theme);
+
+		if (themeColorMeta) {
+			themeColorMeta.setAttribute("content", theme === "dark" ? "#0d1422" : "#edf3ff");
+		}
+
+		updateThemeButtonLabel();
+
+		try {
+			window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+		} catch (error) {
+			// Ignora falha de escrita em storage restrito.
+		}
+	}
+
+	function updateThemeButtonLabel() {
+		if (!themeButton || !themeLabel || !themeIcon) {
+			return;
+		}
+
+		var nextTheme = currentTheme === "dark" ? "light" : "dark";
+		var textKey = nextTheme === "light" ? "themeToLight" : "themeToDark";
+		var ariaKey = nextTheme === "light" ? "themeToLightAria" : "themeToDarkAria";
+		themeLabel.textContent = getText(textKey);
+		themeIcon.textContent = nextTheme === "light" ? "☀" : "☾";
+		themeButton.setAttribute("aria-label", getText(ariaKey));
+		themeButton.setAttribute("aria-pressed", String(currentTheme === "dark"));
 	}
 
 	langButtons.forEach(function (button) {
@@ -132,6 +183,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			applyLanguage(button.getAttribute("data-lang-option") || "pt");
 		});
 	});
+
+	if (themeButton) {
+		themeButton.addEventListener("click", function () {
+			var nextTheme = currentTheme === "dark" ? "light" : "dark";
+			applyTheme(nextTheme);
+		});
+	}
 
 	try {
 		var storedLanguage = window.localStorage.getItem(STORAGE_KEY);
@@ -142,6 +200,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		currentLanguage = "pt";
 	}
 
+	try {
+		var storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+		if (storedTheme && ["dark", "light"].includes(storedTheme)) {
+			currentTheme = storedTheme;
+		}
+	} catch (error) {
+		currentTheme = "dark";
+	}
+
+	applyTheme(currentTheme);
 	applyLanguage(currentLanguage);
 
 	var navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));

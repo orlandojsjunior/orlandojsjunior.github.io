@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-lang="pt">
+<html lang="pt-BR" data-lang="pt" data-theme="dark">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -85,6 +85,16 @@
 				</div>
 			</nav>
 			<div class="language-switch-wrap">
+				<button
+					type="button"
+					id="theme-toggle"
+					class="theme-btn"
+					aria-pressed="true"
+					aria-label="Ativar modo claro"
+				>
+					<span class="theme-icon" id="theme-icon" aria-hidden="true">☀</span>
+					<span id="theme-label">Modo claro</span>
+				</button>
 				<div class="language-switch" aria-label="Seletor de idioma">
 					<button type="button" class="lang-btn is-active" data-lang-option="pt" aria-pressed="true">PT</button>
 					<button type="button" class="lang-btn" data-lang-option="en" aria-pressed="false">EN</button>
