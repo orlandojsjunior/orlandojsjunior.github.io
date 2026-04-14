@@ -254,6 +254,57 @@ document.addEventListener("DOMContentLoaded", function () {
 	window.addEventListener("scroll", updateActiveNavLink, { passive: true });
 	window.addEventListener("resize", updateActiveNavLink);
 
+	function sendAnalyticsEvent(eventName, params) {
+		if (typeof window.plausible === "function") {
+			window.plausible(eventName, { props: params || {} });
+		}
+
+		if (typeof window.gtag === "function") {
+			window.gtag("event", eventName, params || {});
+		}
+	}
+
+	document.addEventListener("click", function (event) {
+		var link = event.target.closest("a[href]");
+		if (!link) {
+			return;
+		}
+
+		var href = link.getAttribute("href") || "";
+		if (!href || href.startsWith("#")) {
+			return;
+		}
+
+		var normalizedHref = href.toLowerCase();
+		var linkText = (link.textContent || "").trim();
+
+		if (normalizedHref.includes("linkedin.com")) {
+			sendAnalyticsEvent("click_linkedin", {
+				link_text: linkText,
+				url: href,
+				lang: currentLanguage
+			});
+			return;
+		}
+
+		if (normalizedHref.includes("github.com")) {
+			sendAnalyticsEvent("click_github", {
+				link_text: linkText,
+				url: href,
+				lang: currentLanguage
+			});
+			return;
+		}
+
+		if (link.closest("#portfolio") && link.classList.contains("btn-project")) {
+			sendAnalyticsEvent("click_projeto", {
+				link_text: linkText,
+				url: href,
+				lang: currentLanguage
+			});
+		}
+	});
+
 	var modal = document.getElementById("diploma-modal");
 	var trigger = document.getElementById("diploma-trigger");
 	var modalImg = document.getElementById("diploma-img-full");
