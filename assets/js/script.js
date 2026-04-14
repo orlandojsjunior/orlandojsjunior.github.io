@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	function openModalWithFront() {
 		showingFront = true;
 		modal.style.display = "block";
+		document.body.classList.add("diploma-guard");
 		modalImg.src = frontImage;
 		captionText.textContent = "Diploma de Graduacao - Frente";
 		toggleSideButton.textContent = "Ver verso";
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function closeModal() {
 		modal.style.display = "none";
+		document.body.classList.remove("diploma-guard");
 	}
 
 	trigger.addEventListener("click", openModalWithFront);
@@ -69,6 +71,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	document.addEventListener("dragstart", function (event) {
 		if (event.target.closest("#diploma-trigger") || event.target.closest("#diploma-img-full")) {
+			event.preventDefault();
+		}
+	});
+
+	// Bloqueia cópia/recorte quando a visualização protegida estiver ativa.
+	document.addEventListener("copy", function (event) {
+		if (modal.style.display === "block") {
+			event.preventDefault();
+		}
+	});
+
+	document.addEventListener("cut", function (event) {
+		if (modal.style.display === "block") {
+			event.preventDefault();
+		}
+	});
+
+	document.addEventListener("selectstart", function (event) {
+		if (modal.style.display === "block") {
 			event.preventDefault();
 		}
 	});
