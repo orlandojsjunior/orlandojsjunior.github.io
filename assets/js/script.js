@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	var trigger = document.getElementById("diploma-trigger");
 	var modalImg = document.getElementById("diploma-img-full");
 	var captionText = document.getElementById("modal-caption");
-	var closeButton = document.getElementsByClassName("modal-close")[0];
+	var closeButton = document.getElementById("diploma-close");
 	var toggleSideButton = document.getElementById("diploma-toggle-side");
 
 	if (!modal || !trigger || !modalImg || !captionText || !closeButton || !toggleSideButton) {
@@ -63,18 +63,28 @@ document.addEventListener("DOMContentLoaded", function () {
 	function openModalWithFront() {
 		showingFront = true;
 		modal.style.display = "block";
+		modal.setAttribute("aria-hidden", "false");
 		document.body.classList.add("diploma-guard");
 		modalImg.src = frontImage;
 		captionText.textContent = "Diploma de Graduacao - Frente";
 		toggleSideButton.textContent = "Ver verso";
+		closeButton.focus();
 	}
 
 	function closeModal() {
 		modal.style.display = "none";
+		modal.setAttribute("aria-hidden", "true");
 		document.body.classList.remove("diploma-guard");
+		trigger.focus();
 	}
 
 	trigger.addEventListener("click", openModalWithFront);
+	trigger.addEventListener("keydown", function (event) {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			openModalWithFront();
+		}
+	});
 
 	closeButton.addEventListener("click", closeModal);
 
@@ -87,6 +97,24 @@ document.addEventListener("DOMContentLoaded", function () {
 	document.addEventListener("keydown", function (event) {
 		if (event.key === "Escape" && modal.style.display === "block") {
 			closeModal();
+		}
+
+		if (event.key === "Tab" && modal.style.display === "block") {
+			var focusables = [closeButton, toggleSideButton].filter(Boolean);
+			if (!focusables.length) {
+				return;
+			}
+
+			var first = focusables[0];
+			var last = focusables[focusables.length - 1];
+
+			if (event.shiftKey && document.activeElement === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && document.activeElement === last) {
+				event.preventDefault();
+				first.focus();
+			}
 		}
 	});
 

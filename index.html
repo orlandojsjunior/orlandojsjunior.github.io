@@ -66,12 +66,13 @@
 </head>
 
 <body>
+	<a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 	<div class="grid-overlay" aria-hidden="true"></div>
 
 	<header>
 		<div class="container">
 			<nav aria-label="Navegacao principal">
-				<a class="logo" href="#inicio">ORLANDO<span>.</span>JR</a>
+				<a class="logo" href="#inicio" aria-label="Ir para o início">ORLANDO<span>.</span>JR</a>
 				<div class="nav-links">
 					<a href="#sobre">Sobre</a>
 					<a href="#graduacao">Graduação</a>
@@ -86,7 +87,7 @@
 		</div>
 	</header>
 
-	<main class="container">
+	<main class="container" id="conteudo-principal" tabindex="-1">
 		<section class="hero" id="inicio">
 			<span class="tag">Solucoes em IA, Compliance, LGPD e Desenvolvimento Web</span>
 			<h1>ORLANDO JUNIOR</h1>
@@ -97,7 +98,7 @@
 				17+ anos em tecnologia, unindo experiência em infraestrutura de TI com atuação atual em IA, Compliance, LGPD e desenvolvimento web.
 			</p>
 			<div class="hero-actions">
-				<a class="btn btn-primary" href="https://www.linkedin.com/in/orlandojsjunior/" target="_blank" rel="noopener noreferrer">Falar no LinkedIn</a>
+				<a class="btn btn-primary" href="https://www.linkedin.com/in/orlandojsjunior/" target="_blank" rel="noopener noreferrer" aria-label="Falar no LinkedIn (abre em nova aba)">Falar no LinkedIn</a>
 			</div>
 		</section>
 
@@ -174,7 +175,7 @@
 						até o desenvolvimento back-end e front-end, preparando-me para criar soluções digitais completas e eficientes.
 					</p>
 					<div class="diploma-view">
-						<img src="assets/diplomas/diploma-frente-thumbnail.png" alt="Diploma de Graduacao - Clique para ampliar" id="diploma-trigger" class="diploma-thumbnail" loading="lazy" decoding="async" fetchpriority="low" width="200" height="100">
+						<img src="assets/diplomas/diploma-frente-thumbnail.png" alt="Diploma de Graduacao - Clique para ampliar" id="diploma-trigger" class="diploma-thumbnail" loading="lazy" decoding="async" fetchpriority="low" width="200" height="100" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="diploma-modal">
 					</div>
 					<p class="evidence">✓ Curso concluído com sucesso</p>
 				</article>
@@ -549,11 +550,11 @@
 	</main>
 
 	<!-- Modal do Diploma -->
-	<div id="diploma-modal" class="modal">
-		<span class="modal-close">&times;</span>
-		<img class="modal-content" id="diploma-img-full" decoding="async" loading="eager">
+	<div id="diploma-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-caption" aria-hidden="true">
+		<button id="diploma-close" class="modal-close" type="button" aria-label="Fechar visualização do diploma">&times;</button>
+		<img class="modal-content" id="diploma-img-full" decoding="async" loading="eager" alt="">
 		<div class="modal-actions">
-			<button type="button" id="diploma-toggle-side" class="btn-diploma-side">Ver verso</button>
+			<button type="button" id="diploma-toggle-side" class="btn-diploma-side" aria-label="Alternar entre frente e verso do diploma">Ver verso</button>
 		</div>
 		<div id="modal-caption"></div>
 	</div>

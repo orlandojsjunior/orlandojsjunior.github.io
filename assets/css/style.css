@@ -3,7 +3,7 @@
 	--bg-soft: #111827;
 	--surface: rgba(17, 24, 39, 0.65);
 	--text: #f3f6fb;
-	--muted: #b6c2d6;
+	--muted: #c7d3e6;
 	--line: rgba(255, 255, 255, 0.15);
 	--primary: #27d26f;
 	--secondary: #00b4d8;
@@ -33,6 +33,33 @@ body {
 		linear-gradient(180deg, #070b12 0%, #0d1422 52%, #0b1018 100%);
 	line-height: 1.6;
 	overflow-x: hidden;
+}
+
+.skip-link {
+	position: absolute;
+	left: 12px;
+	top: 12px;
+	padding: 10px 14px;
+	background: #e8fff1;
+	color: #062013;
+	border-radius: 10px;
+	font-weight: 800;
+	z-index: 1001;
+	text-decoration: none;
+	transform: translateY(-180%);
+	transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+	outline: 3px solid #39e984;
+	outline-offset: 3px;
+	box-shadow: 0 0 0 5px rgba(57, 233, 132, 0.22);
 }
 
 .grid-overlay {
@@ -760,6 +787,8 @@ body.diploma-guard * {
 	font-weight: bold;
 	transition: 0.3s;
 	cursor: pointer;
+	border: 0;
+	background: transparent;
 }
 
 .modal-close:hover,
