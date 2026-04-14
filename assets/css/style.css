@@ -517,6 +517,31 @@ h2 {
 	margin-top: 4px;
 }
 
+.presence-logo {
+	width: 52px;
+	height: 52px;
+	border-radius: 14px;
+	padding: 8px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	object-fit: contain;
+}
+
+.presence-head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.presence-head h3 {
+	margin: 0;
+}
+
+html[data-theme="light"] .presence-logo {
+	background: rgba(29, 53, 82, 0.08);
+	border-color: rgba(29, 53, 82, 0.18);
+}
+
 .projects {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
