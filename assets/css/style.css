@@ -123,7 +123,7 @@ button:focus-visible,
 }
 
 header {
-	padding: 28px 0;
+	padding: 14px 0;
 	position: sticky;
 	top: 0;
 	z-index: 20;
@@ -141,7 +141,7 @@ nav {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: 20px;
+	gap: 12px;
 }
 
 .theme-btn {
@@ -216,7 +216,7 @@ html[data-theme="light"] .theme-icon {
 
 .nav-links {
 	display: flex;
-	gap: clamp(8px, 0.9vw, 16px);
+	gap: clamp(6px, 0.65vw, 12px);
 	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: flex-end;
@@ -232,7 +232,7 @@ html[data-theme="light"] .theme-icon {
 .nav-links a {
 	text-decoration: none;
 	color: var(--muted);
-	padding: 8px 10px;
+	padding: 6px 8px;
 	white-space: nowrap;
 	border-radius: 999px;
 	transition: 0.25s ease;
@@ -416,13 +416,11 @@ h2 {
 	width: 88px;
 	height: 88px;
 	border-radius: 18px;
-	display: grid;
-	place-items: center;
-	font-family: "Bebas Neue", sans-serif;
-	font-size: 2.1rem;
-	letter-spacing: 0.08em;
-	color: #03270f;
-	background: linear-gradient(135deg, var(--brand-emerald-300), var(--brand-cyan-400));
+	display: block;
+	object-fit: cover;
+	object-position: center 22%;
+	border: 1px solid rgba(255, 255, 255, 0.24);
+	background: rgba(255, 255, 255, 0.08);
 	box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
 }
 
