@@ -98,6 +98,12 @@ nav {
 	gap: 20px;
 }
 
+.language-switch-wrap {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
+}
+
 .language-switch {
 	display: inline-flex;
 	align-items: center;
@@ -854,8 +860,9 @@ body.diploma-guard * {
 		align-items: flex-start;
 	}
 
-	.language-switch {
-		margin-top: 4px;
+	.language-switch-wrap {
+		justify-content: flex-start;
+		margin-top: 8px;
 	}
 
 	.hero {
