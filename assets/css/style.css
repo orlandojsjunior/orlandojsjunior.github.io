@@ -467,6 +467,14 @@ h2 {
 	color: #d0dced;
 }
 
+.profile-card .avatar,
+.profile-card h3,
+.profile-card .profile-line,
+.profile-card .identity-seal,
+.profile-card .profile-summary {
+	justify-self: start;
+}
+
 .about-content {
 	display: grid;
 	gap: 14px;
@@ -1258,6 +1266,20 @@ html[data-theme="light"] footer {
 
 	.about-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.profile-card {
+		padding: 20px;
+		gap: 10px;
+	}
+
+	.avatar {
+		width: clamp(104px, 34vw, 118px);
+		height: clamp(104px, 34vw, 118px);
+	}
+
+	.identity-seal {
+		font-size: 0.74rem;
 	}
 }
 
