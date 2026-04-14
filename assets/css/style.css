@@ -160,6 +160,14 @@ h1 {
 	font-size: clamp(1rem, 2.6vw, 1.14rem);
 }
 
+.hero-subtitle {
+	max-width: 72ch;
+	color: #b9c8dc;
+	font-size: 0.95rem;
+	line-height: 1.55;
+	margin-top: -8px;
+}
+
 .hero-actions {
 	display: flex;
 	gap: 12px;
