@@ -445,6 +445,21 @@ h2 {
 	color: #e5efff;
 }
 
+.identity-seal {
+	margin: 2px 0 0;
+	width: fit-content;
+	padding: 6px 10px;
+	border-radius: 999px;
+	border: 1px solid rgba(122, 235, 177, 0.34);
+	background: rgba(57, 233, 132, 0.12);
+	color: #dcffea;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	line-height: 1.2;
+}
+
 .profile-summary {
 	margin: 4px 0 0;
 	padding-top: 10px;
@@ -1120,6 +1135,12 @@ html[data-theme="light"] .profile-card p {
 
 html[data-theme="light"] .profile-line {
 	color: #234261;
+}
+
+html[data-theme="light"] .identity-seal {
+	border-color: rgba(15, 95, 168, 0.28);
+	background: rgba(15, 95, 168, 0.1);
+	color: #1f4f7f;
 }
 
 html[data-theme="light"] .profile-summary {
