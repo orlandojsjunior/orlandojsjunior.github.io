@@ -179,6 +179,7 @@ nav {
 	height: 100%;
 	display: block;
 	shape-rendering: geometricPrecision;
+	transform-origin: center;
 }
 
 .theme-icon.is-sun {
@@ -187,6 +188,14 @@ nav {
 
 .theme-icon.is-moon {
 	color: #dbe7ff;
+}
+
+.theme-icon.is-sun svg {
+	transform: scale(1);
+}
+
+.theme-icon.is-moon svg {
+	transform: scale(0.78);
 }
 
 html[data-theme="light"] .theme-icon {
