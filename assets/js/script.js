@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	var themeButton = document.getElementById("theme-toggle");
 	var themeIcon = document.getElementById("theme-icon");
 	var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+	var ICON_SUN = '<svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M12 4.75a1 1 0 0 1 1 1V7a1 1 0 1 1-2 0V5.75a1 1 0 0 1 1-1Zm0 11.25a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm7.25-6a1 1 0 0 1 1-1h1.25a1 1 0 1 1 0 2H20.25a1 1 0 0 1-1-1ZM2.5 12a1 1 0 0 1 1-1h1.25a1 1 0 1 1 0 2H3.5a1 1 0 0 1-1-1Zm14.48 5.07a1 1 0 0 1 1.42 0l.88.88a1 1 0 1 1-1.42 1.41l-.88-.88a1 1 0 0 1 0-1.41Zm-11.26 0a1 1 0 0 1 1.42 1.41l-.88.88a1 1 0 0 1-1.42-1.41l.88-.88Zm12.14-12.13a1 1 0 0 1 1.42 1.41l-.88.88a1 1 0 1 1-1.42-1.41l.88-.88Zm-12.14 0 .88.88A1 1 0 1 1 5.18 7.23l-.88-.88A1 1 0 0 1 5.72 4.94Z" fill="currentColor"/></svg>';
+	var ICON_MOON = '<svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.76 3.18a1 1 0 0 1 .98 1.58A8.5 8.5 0 1 0 19.24 14a1 1 0 0 1 1.58.98A10.5 10.5 0 1 1 9.02 3.18a1 1 0 0 1 .98 1.58A8.5 8.5 0 0 0 19.24 14a1 1 0 0 1 1.58.98 10.46 10.46 0 0 1-5.06 6.43A10.5 10.5 0 0 1 3.18 9.02a10.46 10.46 0 0 1 6.43-5.06 1 1 0 0 1 1.06.32 1 1 0 0 1 .18 1.06 8.5 8.5 0 0 0 4.91 11.44 8.49 8.49 0 0 0 3.98.49 1 1 0 0 1 .98 1.58A10.47 10.47 0 0 1 15.76 3.18Z" fill="currentColor"/></svg>';
 
 	function applyTheme(theme) {
 		if (!["dark", "light"].includes(theme)) {
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		var nextTheme = currentTheme === "dark" ? "light" : "dark";
-		themeIcon.textContent = nextTheme === "light" ? "☀" : "☾";
+		themeIcon.innerHTML = nextTheme === "light" ? ICON_SUN : ICON_MOON;
 		themeIcon.classList.toggle("is-sun", nextTheme === "light");
 		themeIcon.classList.toggle("is-moon", nextTheme !== "light");
 		themeButton.setAttribute("aria-label", nextTheme === "light" ? "Ativar modo claro" : "Ativar modo escuro");
