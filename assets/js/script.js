@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	var THEME_STORAGE_KEY = "preferred-theme";
 	var currentTheme = "dark";
 	var themeButton = document.getElementById("theme-toggle");
-	var themeLabel = document.getElementById("theme-label");
 	var themeIcon = document.getElementById("theme-icon");
 	var themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
@@ -28,13 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function updateThemeButtonLabel() {
-		if (!themeButton || !themeLabel || !themeIcon) {
+		if (!themeButton || !themeIcon) {
 			return;
 		}
 
 		var nextTheme = currentTheme === "dark" ? "light" : "dark";
-		themeLabel.textContent = nextTheme === "light" ? "Modo claro" : "Modo escuro";
 		themeIcon.textContent = nextTheme === "light" ? "☀" : "☾";
+		themeIcon.classList.toggle("is-sun", nextTheme === "light");
+		themeIcon.classList.toggle("is-moon", nextTheme !== "light");
 		themeButton.setAttribute("aria-label", nextTheme === "light" ? "Ativar modo claro" : "Ativar modo escuro");
 		themeButton.setAttribute("aria-pressed", String(currentTheme === "dark"));
 	}

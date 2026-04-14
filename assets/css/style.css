@@ -144,26 +144,17 @@ nav {
 	gap: 20px;
 }
 
-.theme-switch-wrap {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: 10px;
-	gap: 10px;
-	align-items: center;
-}
-
 .theme-btn {
 	border: 1px solid rgba(255, 255, 255, 0.22);
 	background: rgba(255, 255, 255, 0.06);
 	color: var(--text);
-	padding: 9px 12px;
+	padding: 9px;
 	border-radius: 999px;
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
-	font-size: 0.78rem;
-	font-weight: 800;
-	letter-spacing: 0.01em;
+	justify-content: center;
+	width: 42px;
+	height: 42px;
 	cursor: pointer;
 	transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
@@ -174,9 +165,17 @@ nav {
 }
 
 .theme-icon {
-	width: 1.1rem;
+	width: 1.15rem;
 	text-align: center;
-	font-size: 0.92rem;
+	font-size: 1.02rem;
+}
+
+.theme-icon.is-sun {
+	color: var(--brand-amber-400);
+}
+
+.theme-icon.is-moon {
+	color: #dbe7ff;
 }
 
 html[data-theme="light"] .theme-btn {
@@ -201,6 +200,11 @@ html[data-theme="light"] .theme-btn {
 	gap: 14px;
 	flex-wrap: wrap;
 	justify-content: flex-end;
+}
+
+.nav-links .theme-btn {
+	order: 999;
+	margin-left: 4px;
 }
 
 .nav-links a {
@@ -1403,19 +1407,14 @@ html[data-theme="light"] footer {
 		align-items: flex-start;
 	}
 
-	.theme-switch-wrap {
+	.nav-links {
 		justify-content: flex-start;
-		margin-top: 8px;
 	}
 
 	.theme-btn {
 		padding: 9px;
 		min-width: 42px;
 		justify-content: center;
-	}
-
-	#theme-label {
-		display: none;
 	}
 
 	.hero {
