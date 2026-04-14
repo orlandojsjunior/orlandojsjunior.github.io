@@ -354,6 +354,7 @@ h1 {
 	background: rgba(12, 19, 32, 0.76);
 	display: grid;
 	gap: 6px;
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .proof-card strong {
@@ -376,7 +377,7 @@ h1 {
 	border-radius: 12px;
 	padding: 12px 18px;
 	border: 1px solid transparent;
-	transition: transform 0.2s ease, filter 0.2s ease;
+	transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), filter 0.24s ease, box-shadow 0.24s ease;
 }
 
 .btn-primary {
@@ -496,21 +497,7 @@ h2 {
 	padding: 20px;
 	display: grid;
 	gap: 8px;
-	transform: translateY(8px);
-	opacity: 0;
-	animation: reveal 700ms ease forwards;
-}
-
-.card:nth-child(2) {
-	animation-delay: 110ms;
-}
-
-.card:nth-child(3) {
-	animation-delay: 220ms;
-}
-
-.card:nth-child(4) {
-	animation-delay: 330ms;
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card small {
@@ -550,6 +537,7 @@ h2 {
 	color: var(--accent);
 	font-weight: 800;
 	margin-top: 4px;
+	transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.22s ease;
 }
 
 .presence-logo {
@@ -590,7 +578,7 @@ html[data-theme="light"] .presence-logo {
 	background: rgba(13, 20, 34, 0.84);
 	display: grid;
 	gap: 12px;
-	transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project:hover {
@@ -666,7 +654,7 @@ html[data-theme="light"] .presence-logo {
 	background: linear-gradient(120deg, var(--brand-emerald-300), var(--brand-cyan-400));
 	color: #032112;
 	border: 1px solid transparent;
-	transition: filter 0.2s ease, transform 0.2s ease;
+	transition: filter 0.24s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.24s ease;
 }
 
 .btn-project:hover {
@@ -689,6 +677,7 @@ html[data-theme="light"] .presence-logo {
 	font-weight: 700;
 	color: #67e8f9;
 	width: fit-content;
+	transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.22s ease;
 }
 
 .cert-list {
@@ -704,6 +693,7 @@ html[data-theme="light"] .presence-logo {
 	background: rgba(13, 20, 34, 0.84);
 	display: grid;
 	gap: 8px;
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cert-badge {
@@ -749,6 +739,7 @@ html[data-theme="light"] .presence-logo {
 	gap: 6px;
 	position: relative;
 	overflow: hidden;
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .timeline-item::before {
@@ -793,6 +784,7 @@ html[data-theme="light"] .presence-logo {
 	background: rgba(255, 255, 255, 0.03);
 	display: grid;
 	gap: 10px;
+	transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .skill-group h3 {
@@ -857,7 +849,7 @@ footer {
 	color: var(--bg);
 	text-decoration: none;
 	font-weight: 700;
-	transition: background-color 0.3s ease;
+	transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.22s ease;
 }
 
 .btn-diploma:hover {
@@ -868,7 +860,7 @@ footer {
 	width: 120px;
 	cursor: pointer;
 	border-radius: 8px;
-	transition: transform 0.2s ease;
+	transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .diploma-thumbnail:hover {
@@ -973,6 +965,71 @@ body.diploma-guard * {
 .modal-close:focus {
 	color: #bbb;
 	text-decoration: none;
+}
+
+.reveal-item {
+	opacity: 0;
+	transform: translateY(16px) scale(0.985);
+	transition-property: opacity, transform;
+	transition-duration: 0.66s;
+	transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	transition-delay: var(--reveal-delay, 0ms);
+	will-change: transform, opacity;
+}
+
+.reveal-item.is-revealed {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.proof-card:hover,
+.card:hover,
+.cert-item:hover,
+.timeline-item:hover,
+.skill-group:hover {
+	transform: translateY(-4px);
+	border-color: rgba(39, 210, 111, 0.42);
+	box-shadow: 0 20px 36px rgba(0, 0, 0, 0.24);
+}
+
+.card a:hover,
+.project a:hover,
+.cert-item a:hover {
+	transform: translateX(2px);
+}
+
+.btn:hover,
+.btn-project:hover,
+.btn-diploma:hover {
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal-item,
+	.reveal-item.is-revealed {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.btn,
+	.btn-project,
+	.btn-diploma,
+	.theme-btn,
+	.lang-btn,
+	.nav-links a,
+	.proof-card,
+	.card,
+	.project,
+	.cert-item,
+	.timeline-item,
+	.skill-group,
+	.card a,
+	.project a,
+	.cert-item a,
+	.diploma-thumbnail {
+		transition: none;
+	}
 }
 
 html[data-theme="light"] .grid-overlay {

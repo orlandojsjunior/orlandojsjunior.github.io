@@ -254,6 +254,55 @@ document.addEventListener("DOMContentLoaded", function () {
 	window.addEventListener("scroll", updateActiveNavLink, { passive: true });
 	window.addEventListener("resize", updateActiveNavLink);
 
+	function initRevealAnimations() {
+		var revealTargets = Array.from(document.querySelectorAll(".proof-card, .card, .project, .cert-item, .timeline-item, .skill-group, .about-highlight"));
+		if (!revealTargets.length) {
+			return;
+		}
+
+		revealTargets.forEach(function (element) {
+			element.classList.add("reveal-item");
+		});
+
+		Array.from(document.querySelectorAll(".proof-grid, .cards, .projects, .cert-list, .timeline, .skills-board, .about-content")).forEach(function (group) {
+			var items = Array.from(group.querySelectorAll(".reveal-item"));
+			items.forEach(function (item, index) {
+				item.style.setProperty("--reveal-delay", index * 85 + "ms");
+			});
+		});
+
+		var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (reduceMotion || typeof window.IntersectionObserver === "undefined") {
+			revealTargets.forEach(function (element) {
+				element.classList.add("is-revealed");
+			});
+			return;
+		}
+
+		var observer = new window.IntersectionObserver(
+			function (entries, obs) {
+				entries.forEach(function (entry) {
+					if (!entry.isIntersecting) {
+						return;
+					}
+
+					entry.target.classList.add("is-revealed");
+					obs.unobserve(entry.target);
+				});
+			},
+			{
+				threshold: 0.16,
+				rootMargin: "0px 0px -8% 0px"
+			}
+		);
+
+		revealTargets.forEach(function (element) {
+			observer.observe(element);
+		});
+	}
+
+	initRevealAnimations();
+
 	function sendAnalyticsEvent(eventName, params) {
 		if (typeof window.plausible === "function") {
 			window.plausible(eventName, { props: params || {} });
