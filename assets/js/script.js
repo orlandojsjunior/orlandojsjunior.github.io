@@ -1,4 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () {
+	var navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+	var sections = navLinks
+		.map(function (link) {
+			var id = link.getAttribute("href");
+			return id ? document.querySelector(id) : null;
+		})
+		.filter(function (section) {
+			return section;
+		});
+
+	function updateActiveNavLink() {
+		if (!navLinks.length || !sections.length) {
+			return;
+		}
+
+		var header = document.querySelector("header");
+		var headerOffset = (header ? header.offsetHeight : 0) + 28;
+		var scrollPosition = window.scrollY + headerOffset;
+		var activeId = sections[0].id;
+
+		sections.forEach(function (section) {
+			if (scrollPosition >= section.offsetTop) {
+				activeId = section.id;
+			}
+		});
+
+		navLinks.forEach(function (link) {
+			var isActive = link.getAttribute("href") === "#" + activeId;
+			link.classList.toggle("active", isActive);
+
+			if (isActive) {
+				link.setAttribute("aria-current", "page");
+			} else {
+				link.removeAttribute("aria-current");
+			}
+		});
+	}
+
+	updateActiveNavLink();
+	window.addEventListener("scroll", updateActiveNavLink, { passive: true });
+	window.addEventListener("resize", updateActiveNavLink);
+
 	var modal = document.getElementById("diploma-modal");
 	var trigger = document.getElementById("diploma-trigger");
 	var modalImg = document.getElementById("diploma-img-full");
