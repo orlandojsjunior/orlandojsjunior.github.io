@@ -1,0 +1,109 @@
+document.addEventListener("DOMContentLoaded", function () {
+	var modal = document.getElementById("diploma-modal");
+	var trigger = document.getElementById("diploma-trigger");
+	var modalImg = document.getElementById("diploma-img-full");
+	var captionText = document.getElementById("modal-caption");
+	var closeButton = document.getElementsByClassName("modal-close")[0];
+	var toggleSideButton = document.getElementById("diploma-toggle-side");
+
+	if (!modal || !trigger || !modalImg || !captionText || !closeButton || !toggleSideButton) {
+		return;
+	}
+
+	var frontImage = "assets/diplomas/diploma-frente-full.jpg";
+	var backImage = "assets/diplomas/diploma-verso-full.jpg";
+	var showingFront = true;
+	var blockedKeys = ["s", "u", "p", "c", "i", "j"];
+
+	trigger.setAttribute("draggable", "false");
+	modalImg.setAttribute("draggable", "false");
+
+	function openModalWithFront() {
+		showingFront = true;
+		modal.style.display = "block";
+		modalImg.src = frontImage;
+		captionText.textContent = "Diploma de Graduacao - Frente";
+		toggleSideButton.textContent = "Ver verso";
+	}
+
+	function closeModal() {
+		modal.style.display = "none";
+	}
+
+	trigger.addEventListener("click", openModalWithFront);
+
+	closeButton.addEventListener("click", closeModal);
+
+	modal.addEventListener("click", function (event) {
+		if (event.target === modal) {
+			closeModal();
+		}
+	});
+
+	document.addEventListener("keydown", function (event) {
+		if (event.key === "Escape" && modal.style.display === "block") {
+			closeModal();
+		}
+	});
+
+	toggleSideButton.addEventListener("click", function () {
+		showingFront = !showingFront;
+
+		if (showingFront) {
+			modalImg.src = frontImage;
+			captionText.textContent = "Diploma de Graduacao - Frente";
+			toggleSideButton.textContent = "Ver verso";
+		} else {
+			modalImg.src = backImage;
+			captionText.textContent = "Diploma de Graduacao - Verso";
+			toggleSideButton.textContent = "Ver frente";
+		}
+	});
+
+	// Dificulta salvar/copiar por menus e arraste.
+	document.addEventListener("contextmenu", function (event) {
+		if (event.target.closest("#diploma-trigger") || event.target.closest("#diploma-img-full")) {
+			event.preventDefault();
+		}
+	});
+
+	document.addEventListener("dragstart", function (event) {
+		if (event.target.closest("#diploma-trigger") || event.target.closest("#diploma-img-full")) {
+			event.preventDefault();
+		}
+	});
+
+	// Dificulta atalhos de inspeção, impressão e salvamento enquanto o modal estiver aberto.
+	document.addEventListener("keydown", function (event) {
+		var isModalOpen = modal.style.display === "block";
+		var key = (event.key || "").toLowerCase();
+
+		if (!isModalOpen) {
+			return;
+		}
+
+		if (event.key === "PrintScreen") {
+			event.preventDefault();
+			modalImg.classList.add("is-protected");
+			setTimeout(function () {
+				modalImg.classList.remove("is-protected");
+			}, 1200);
+
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				navigator.clipboard.writeText("Captura de tela desabilitada nesta visualizacao.").catch(function () {});
+			}
+		}
+
+		if (event.ctrlKey && blockedKeys.includes(key)) {
+			event.preventDefault();
+		}
+
+		if (event.key === "F12") {
+			event.preventDefault();
+		}
+
+		if (event.ctrlKey && event.shiftKey && ["i", "j", "c"].includes(key)) {
+			event.preventDefault();
+		}
+	});
+});
