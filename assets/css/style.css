@@ -168,7 +168,7 @@ nav {
 .theme-icon {
 	width: auto;
 	text-align: center;
-	font-size: 1.48rem;
+	font-size: 1.7rem;
 }
 
 .theme-icon.is-sun {
@@ -179,12 +179,8 @@ nav {
 	color: #dbe7ff;
 }
 
-html[data-theme="light"] .theme-icon.is-moon {
-	color: #000;
-}
-
-html[data-theme="light"] .theme-icon.is-sun {
-	color: #000;
+html[data-theme="light"] .theme-icon {
+	color: #000 !important;
 }
 
 .logo {
@@ -201,20 +197,24 @@ html[data-theme="light"] .theme-icon.is-sun {
 
 .nav-links {
 	display: flex;
-	gap: 12px;
+	gap: clamp(8px, 0.9vw, 16px);
 	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: flex-end;
+	margin-left: auto;
 }
 
 .nav-links .theme-btn {
-	margin-left: 2px;
+	margin-left: 0;
+	display: inline-flex;
+	align-self: center;
 }
 
 .nav-links a {
 	text-decoration: none;
 	color: var(--muted);
-	padding: 8px 12px;
+	padding: 8px 10px;
+	white-space: nowrap;
 	border-radius: 999px;
 	transition: 0.25s ease;
 	border: 1px solid transparent;
@@ -1366,8 +1366,10 @@ html[data-theme="light"] .nav-links a:hover {
 }
 
 html[data-theme="light"] .theme-btn {
+	color: #000 !important;
 	background: transparent;
 	box-shadow: none;
+	filter: none;
 }
 
 html[data-theme="light"] .stack-chip,
@@ -1429,5 +1431,67 @@ html[data-theme="light"] footer {
 
 	.about-grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (min-width: 781px) and (max-width: 1180px) {
+	.nav-links {
+		gap: 8px;
+		margin-left: auto;
+	}
+
+	.nav-links a {
+		padding: 7px 8px;
+		font-size: 0.86rem;
+	}
+
+	.theme-icon {
+		font-size: 1.55rem;
+	}
+}
+
+/* Override final do menu e botao de tema (prioridade alta) */
+header nav .nav-links {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 10px !important;
+	flex-wrap: nowrap !important;
+	margin-left: auto;
+}
+
+header nav .nav-links a {
+	white-space: nowrap !important;
+}
+
+header nav .nav-links #theme-toggle.theme-btn {
+	order: 999;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	min-width: 28px;
+	min-height: 28px;
+}
+
+header nav .nav-links #theme-toggle .theme-icon {
+	font-size: 1.75rem !important;
+	line-height: 1;
+}
+
+html[data-theme="light"] header nav .nav-links #theme-toggle,
+html[data-theme="light"] header nav .nav-links #theme-toggle .theme-icon {
+	color: #000 !important;
+}
+
+@media (max-width: 780px) {
+	header nav .nav-links {
+		flex-wrap: wrap !important;
+		justify-content: flex-start;
+		gap: 10px !important;
 	}
 }
