@@ -524,7 +524,16 @@ h2 {
 	padding: 8px;
 	background: rgba(255, 255, 255, 0.08);
 	border: 1px solid rgba(255, 255, 255, 0.2);
-	object-fit: contain;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #dff2ff;
+}
+
+.presence-logo svg {
+	width: 100%;
+	height: 100%;
+	display: block;
 }
 
 .presence-head {
@@ -540,6 +549,7 @@ h2 {
 html[data-theme="light"] .presence-logo {
 	background: rgba(29, 53, 82, 0.08);
 	border-color: rgba(29, 53, 82, 0.18);
+	color: #1d3552;
 }
 
 .projects {
@@ -700,6 +710,39 @@ html[data-theme="light"] .presence-logo {
 	font-size: 0.94rem;
 	color: var(--muted);
 	line-height: 1.72;
+}
+
+.cert-meta small {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.timeline-item small {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.meta-icon {
+	width: 0.96rem;
+	height: 0.96rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #8fb5ff;
+	flex: 0 0 auto;
+}
+
+.cert-meta .meta-icon {
+	margin-top: 2px;
+}
+
+.meta-icon svg {
+	width: 100%;
+	height: 100%;
+	display: block;
 }
 
 .timeline {
@@ -1076,6 +1119,10 @@ html[data-theme="light"] .project small,
 html[data-theme="light"] .cert-item small,
 html[data-theme="light"] .timeline-item small {
 	color: #3f6ca8;
+}
+
+html[data-theme="light"] .meta-icon {
+	color: #2f5f96;
 }
 
 html[data-theme="light"] .evidence {
