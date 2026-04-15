@@ -1,4 +1,19 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+	// Efeito de header ao rolar
+	var header = document.querySelector('header');
+	var lastScroll = 0;
+	window.addEventListener('scroll', function() {
+		var scrollY = window.scrollY || window.pageYOffset;
+		if (header) {
+			if (scrollY > 24) {
+				header.classList.add('scrolled');
+			} else {
+				header.classList.remove('scrolled');
+			}
+		}
+		lastScroll = scrollY;
+	});
 	// Menu mobile toggle
 	var menuToggle = document.getElementById("menu-toggle");
 	var navMobile = document.getElementById("nav-mobile");

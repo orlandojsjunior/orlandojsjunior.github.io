@@ -130,6 +130,12 @@ header {
 	backdrop-filter: blur(8px);
 	background: rgba(7, 11, 18, 0.45);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	transition: background 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+header.scrolled {
+	background: rgba(7, 11, 18, 0.92);
+	box-shadow: 0 4px 24px rgba(0,0,0,0.18);
 }
 
 html[data-theme="light"] header {
