@@ -567,6 +567,86 @@ h2 {
 	line-height: 1.78;
 }
 
+.graduation-shell {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+	padding: 22px;
+	border-radius: calc(var(--radius) + 4px);
+	border: 1px solid var(--line);
+	background:
+		radial-gradient(circle at 82% 14%, rgba(39, 210, 111, 0.16), transparent 48%),
+		linear-gradient(128deg, rgba(7, 12, 20, 0.92), rgba(13, 20, 34, 0.9));
+}
+
+.graduation-card {
+	border-color: rgba(255, 255, 255, 0.15);
+	background: linear-gradient(165deg, rgba(0, 180, 216, 0.12), rgba(255, 255, 255, 0.03));
+	max-width: none;
+	margin: 0;
+	padding: 16px;
+	gap: 10px;
+}
+
+.graduation-meta {
+	padding-bottom: 6px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+	line-height: 1.45;
+}
+
+.graduation-link {
+	width: fit-content;
+	display: inline-flex;
+	align-items: center;
+	font-size: 0.84rem;
+	font-weight: 800;
+	text-decoration: none;
+	color: #67e8f9;
+}
+
+.graduation-inline {
+	display: grid;
+	grid-template-columns: minmax(120px, 160px) minmax(0, 1fr);
+	align-items: start;
+	gap: 12px;
+}
+
+.graduation-inline p {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.58;
+}
+
+.graduation-copy {
+	display: grid;
+	gap: 8px;
+	align-content: start;
+}
+
+.graduation-card .diploma-view {
+	margin: 0;
+	padding: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.03);
+	display: flex;
+	justify-content: center;
+}
+
+.graduation-card .diploma-thumbnail {
+	width: min(100%, 150px);
+	height: auto;
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+	transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease;
+}
+
+.graduation-card .diploma-thumbnail:hover {
+	transform: translateY(-2px) scale(1.03);
+	box-shadow: 0 14px 26px rgba(0, 0, 0, 0.26);
+}
+
 .cards {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -1291,6 +1371,36 @@ html[data-theme="light"] .about-highlight {
 	background: linear-gradient(165deg, rgba(15, 95, 168, 0.08), rgba(255, 255, 255, 0.94));
 }
 
+html[data-theme="light"] .graduation-shell {
+	border-color: rgba(26, 37, 55, 0.16);
+	background:
+		radial-gradient(circle at 82% 14%, rgba(39, 210, 111, 0.16), transparent 50%),
+		linear-gradient(128deg, rgba(248, 252, 255, 0.98), rgba(236, 244, 255, 0.95));
+}
+
+html[data-theme="light"] .graduation-card {
+	border-color: rgba(26, 37, 55, 0.16);
+	background: linear-gradient(165deg, rgba(15, 95, 168, 0.12), rgba(255, 255, 255, 0.9));
+}
+
+html[data-theme="light"] .graduation-meta {
+	border-bottom-color: rgba(26, 37, 55, 0.16);
+}
+
+html[data-theme="light"] .graduation-link {
+	color: #0f5fa8;
+}
+
+html[data-theme="light"] .graduation-card .diploma-view {
+	border-color: rgba(26, 37, 55, 0.16);
+	background: rgba(15, 95, 168, 0.06);
+}
+
+html[data-theme="light"] .graduation-card .diploma-thumbnail {
+	border-color: rgba(26, 37, 55, 0.2);
+	box-shadow: 0 10px 22px rgba(31, 49, 73, 0.16);
+}
+
 html[data-theme="light"] .card,
 html[data-theme="light"] .skill-group {
 	background: rgba(255, 255, 255, 0.95);
@@ -1407,6 +1517,20 @@ html[data-theme="light"] footer {
 		grid-template-columns: 1fr;
 		padding: 16px;
 		gap: 14px;
+	}
+
+	.graduation-shell {
+		grid-template-columns: 1fr;
+		padding: 16px;
+		gap: 14px;
+	}
+
+	.graduation-inline {
+		grid-template-columns: 1fr;
+	}
+
+	.graduation-card .diploma-view {
+		justify-content: flex-start;
 	}
 
 	.profile-card {
