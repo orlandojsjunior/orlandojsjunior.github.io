@@ -326,6 +326,7 @@ html[data-theme="light"] .theme-icon {
 		transition: max-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.nav-links.open {
+		display: flex !important;
 		max-height: 500px;
 		border-top: 1px solid rgba(255,255,255,0.08);
 	}
