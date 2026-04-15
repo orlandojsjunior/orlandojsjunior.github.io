@@ -143,6 +143,12 @@ html[data-theme="light"] header {
 	flex-direction: column;
 	gap: 0;
 }
+.nav-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+}
 
 .nav-row {
 	display: flex;
@@ -152,6 +158,11 @@ html[data-theme="light"] header {
 	gap: 10px;
 }
 
+@media (max-width: 900px) {
+	.nav-actions {
+		gap: 2px;
+	}
+}
 @media (max-width: 900px) {
 	.nav-row {
 		gap: 0;
