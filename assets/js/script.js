@@ -198,6 +198,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	});
 
+	var backToTopButton = document.getElementById("back-to-top");
+	if (backToTopButton) {
+		function updateBackToTopVisibility() {
+			var shouldShow = window.scrollY > 420;
+			backToTopButton.classList.toggle("is-visible", shouldShow);
+		}
+
+		backToTopButton.addEventListener("click", function () {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		});
+
+		updateBackToTopVisibility();
+		window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+	}
+
 	var modal = document.getElementById("diploma-modal");
 	var trigger = document.getElementById("diploma-trigger");
 	var modalImg = document.getElementById("diploma-img-full");

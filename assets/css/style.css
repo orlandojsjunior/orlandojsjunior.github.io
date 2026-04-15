@@ -1170,6 +1170,60 @@ body.diploma-guard * {
 	background: rgba(255, 255, 255, 0.18);
 }
 
+.back-to-top {
+	position: fixed;
+	right: 18px;
+	bottom: 18px;
+	width: 44px;
+	height: 44px;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.26);
+	background: linear-gradient(145deg, rgba(39, 210, 111, 0.88), rgba(0, 180, 216, 0.84));
+	color: #032112;
+	font-size: 1.2rem;
+	font-weight: 800;
+	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(8px);
+	transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, filter 0.22s ease;
+	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+	z-index: 35;
+}
+
+.back-to-top-icon {
+	width: 1.35rem;
+	height: 1.35rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transform: translateY(-1px);
+	filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.2));
+}
+
+.back-to-top-icon svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.back-to-top.is-visible {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateY(0);
+}
+
+.back-to-top:hover {
+	filter: brightness(1.05);
+	transform: translateY(-2px);
+}
+
 .modal-content,
 #modal-caption {
 	animation-name: zoom;
@@ -1263,7 +1317,8 @@ body.diploma-guard * {
 	.card a,
 	.project a,
 	.cert-item a,
-	.diploma-thumbnail {
+	.diploma-thumbnail,
+	.back-to-top {
 		transition: none;
 	}
 }
@@ -1472,6 +1527,13 @@ html[data-theme="light"] .btn-project-secondary {
 	color: #1d3552;
 }
 
+html[data-theme="light"] .back-to-top {
+	border-color: rgba(26, 37, 55, 0.2);
+	background: linear-gradient(145deg, rgba(15, 95, 168, 0.92), rgba(58, 131, 199, 0.9));
+	color: #f3f6fb;
+	box-shadow: 0 10px 22px rgba(31, 49, 73, 0.16);
+}
+
 html[data-theme="light"] footer {
 	color: #5b718d;
 }
@@ -1545,6 +1607,11 @@ html[data-theme="light"] footer {
 
 	.identity-seal {
 		font-size: 0.74rem;
+	}
+
+	.back-to-top {
+		right: 14px;
+		bottom: 14px;
 	}
 }
 
