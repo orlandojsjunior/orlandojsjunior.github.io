@@ -137,11 +137,28 @@ html[data-theme="light"] header {
 	border-bottom: 1px solid rgba(26, 37, 55, 0.1);
 }
 
-nav {
+
+.nav-main {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	gap: 0;
+}
+
+.nav-row {
+	display: flex;
 	align-items: center;
-	gap: 12px;
+	justify-content: space-between;
+	width: 100%;
+	gap: 10px;
+}
+
+@media (max-width: 900px) {
+	.nav-row {
+		gap: 0;
+	}
+	.theme-btn {
+		margin-left: 8px;
+	}
 }
 
 .theme-btn {
@@ -272,6 +289,10 @@ html[data-theme="light"] .theme-icon {
 }
 
 @media (max-width: 900px) {
+	.nav-row {
+		width: 100%;
+		justify-content: space-between;
+	}
 	.menu-toggle {
 		display: inline-flex;
 	}
@@ -297,7 +318,7 @@ html[data-theme="light"] .theme-icon {
 		max-height: 500px;
 		border-top: 1px solid rgba(255,255,255,0.08);
 	}
-	.nav-links a, .nav-links .theme-btn {
+	.nav-links a {
 		width: 100%;
 		padding: 14px 24px;
 		font-size: 1.1rem;
@@ -312,6 +333,11 @@ html[data-theme="light"] .theme-icon {
 	.nav-links a:hover {
 		background: rgba(39, 210, 111, 0.08);
 		color: var(--primary);
+	}
+	.theme-btn {
+		position: relative;
+		margin-left: 8px;
+		z-index: 31;
 	}
 }
 
