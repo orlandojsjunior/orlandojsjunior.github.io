@@ -1,3 +1,7 @@
+/* Justificar texto em todas as seções */
+section, .about-content, .about-highlight, .profile-summary, .graduation-copy, .graduation-inline p, .card p, .project p, .cert-item p, .timeline-item p, .section-intro, .hero p {
+	text-align: justify;
+}
 :root {
 	/* Paleta oficial de branding */
 	--brand-emerald-500: #27d26f;
@@ -182,7 +186,10 @@ html[data-theme="light"] header {
 		position: absolute;
 		top: 100%;
 		right: 0;
-		left: 0;
+		left: auto;
+		min-width: 220px;
+		max-width: 90vw;
+		width: max-content;
 		background: rgba(7, 11, 18, 0.97);
 		flex-direction: column;
 		align-items: flex-start;
@@ -200,13 +207,14 @@ html[data-theme="light"] header {
 	}
 	.nav-links.open {
 		height: auto;
-		padding: 18px 0 12px 0;
+		padding: 12px 0 10px 0;
 		overflow: visible;
 		border-top: 1px solid rgba(255,255,255,0.08);
 	}
 	.nav-links a, .nav-links .theme-btn {
 		width: 100%;
-		padding: 14px 24px;
+		box-sizing: border-box;
+		padding: 14px 22px;
 		font-size: 1.1rem;
 		border-radius: 0;
 		text-align: left;
