@@ -239,13 +239,13 @@ html[data-theme="light"] header {
 }
 
 @media (min-width: 901px) {
-	.nav-actions {
-		display: none;
-	}
-	.theme-btn {
-		display: inline-flex;
-		margin-left: 12px;
-	}
+       .menu-toggle {
+	       display: none;
+       }
+       .theme-btn {
+	       display: inline-flex;
+	       margin-left: 12px;
+       }
 }
 @media (min-width: 901px) {
 	.theme-btn {
