@@ -1,3 +1,7 @@
+/* Garante que o topo das seções não fique escondido atrás do header fixo ao navegar por âncoras */
+section, .hero, .proof-section {
+	scroll-margin-top: 90px;
+}
 /* Justificar texto em todas as seções */
 section, .about-content, .about-highlight, .profile-summary, .graduation-copy, .graduation-inline p, .card p, .project p, .cert-item p, .timeline-item p, .section-intro, .hero p {
 	text-align: justify;
