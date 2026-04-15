@@ -241,30 +241,40 @@ document.addEventListener("DOMContentLoaded", function () {
 		window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
 	}
 
+
 	var modal = document.getElementById("diploma-modal");
-	var trigger = document.getElementById("diploma-trigger");
 	var modalImg = document.getElementById("diploma-img-full");
 	var captionText = document.getElementById("modal-caption");
 	var closeButton = document.getElementById("diploma-close");
 	var toggleSideButton = document.getElementById("diploma-toggle-side");
+	var blockedKeys = ["s", "u", "p", "c", "i", "j"];
+	var clipboardProtectedMessage = "Captura de tela desabilitada nesta visualizacao.";
 
-	if (!modal || !trigger || !modalImg || !captionText || !closeButton || !toggleSideButton) {
+	if (!modal || !modalImg || !captionText || !closeButton || !toggleSideButton) {
 		return;
 	}
 
+	// Modal para diploma principal (frente/verso)
 	var frontImage = "assets/diplomas/diploma-frente-full.jpg";
 	var backImage = "assets/diplomas/diploma-verso-full.jpg";
 	var modalCaptionFront = "Diploma de Graduacao - Frente";
 	var modalCaptionBack = "Diploma de Graduacao - Verso";
 	var modalShowBack = "Ver verso";
 	var modalShowFront = "Ver frente";
-	var clipboardProtectedMessage = "Captura de tela desabilitada nesta visualizacao.";
 	var showingFront = true;
-	var blockedKeys = ["s", "u", "p", "c", "i", "j"];
 
-	trigger.setAttribute("draggable", "false");
-	modalImg.setAttribute("draggable", "false");
+	// Função para abrir o modal para qualquer imagem de certificação
+	function openCertModal(imgSrc, caption) {
+		modal.style.display = "block";
+		modal.setAttribute("aria-hidden", "false");
+		document.body.classList.add("diploma-guard");
+		modalImg.src = imgSrc;
+		captionText.textContent = caption;
+		toggleSideButton.style.display = "none";
+		closeButton.focus();
+	}
 
+	// Função para abrir o modal do diploma principal (frente/verso)
 	function openModalWithFront() {
 		showingFront = true;
 		modal.style.display = "block";
@@ -273,6 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		modalImg.src = frontImage;
 		captionText.textContent = modalCaptionFront;
 		toggleSideButton.textContent = modalShowBack;
+		toggleSideButton.style.display = "inline-block";
 		closeButton.focus();
 	}
 
@@ -280,22 +291,49 @@ document.addEventListener("DOMContentLoaded", function () {
 		modal.style.display = "none";
 		modal.setAttribute("aria-hidden", "true");
 		document.body.classList.remove("diploma-guard");
-		trigger.focus();
 	}
 
-	trigger.addEventListener("click", openModalWithFront);
-	trigger.addEventListener("keydown", function (event) {
-		if (event.key === "Enter" || event.key === " ") {
-			event.preventDefault();
-			openModalWithFront();
-		}
+	// Gatilho para diploma principal
+	var trigger = document.getElementById("diploma-trigger");
+	if (trigger) {
+		trigger.setAttribute("draggable", "false");
+		trigger.addEventListener("click", openModalWithFront);
+		trigger.addEventListener("keydown", function (event) {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openModalWithFront();
+			}
+		});
+	}
+	modalImg.setAttribute("draggable", "false");
+
+	// Gatilhos para todas as imagens de certificação (nova seção)
+	document.querySelectorAll('.cert-img[data-modal-img]').forEach(function(img) {
+		img.addEventListener('click', function() {
+			openCertModal(img.getAttribute('data-modal-img'), img.getAttribute('data-modal-caption'));
+		});
+		img.addEventListener('keydown', function(event) {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openCertModal(img.getAttribute('data-modal-img'), img.getAttribute('data-modal-caption'));
+			}
+		});
 	});
 
-	closeButton.addEventListener("click", closeModal);
+	// Ao fechar, sempre volta o botão de alternar lado para o padrão
+	function resetModal() {
+		toggleSideButton.style.display = "inline-block";
+	}
+
+	closeButton.addEventListener("click", function() {
+		closeModal();
+		resetModal();
+	});
 
 	modal.addEventListener("click", function (event) {
 		if (event.target === modal) {
 			closeModal();
+			resetModal();
 		}
 	});
 
@@ -324,16 +362,18 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	toggleSideButton.addEventListener("click", function () {
-		showingFront = !showingFront;
-
-		if (showingFront) {
-			modalImg.src = frontImage;
-			captionText.textContent = modalCaptionFront;
-			toggleSideButton.textContent = modalShowBack;
-		} else {
-			modalImg.src = backImage;
-			captionText.textContent = modalCaptionBack;
-			toggleSideButton.textContent = modalShowFront;
+		// Só alterna se estiver mostrando o diploma principal
+		if (modalImg.src.includes('diploma-frente-full') || modalImg.src.includes('diploma-verso-full')) {
+			showingFront = !showingFront;
+			if (showingFront) {
+				modalImg.src = frontImage;
+				captionText.textContent = modalCaptionFront;
+				toggleSideButton.textContent = modalShowBack;
+			} else {
+				modalImg.src = backImage;
+				captionText.textContent = modalCaptionBack;
+				toggleSideButton.textContent = modalShowFront;
+			}
 		}
 	});
 
