@@ -214,6 +214,7 @@ html[data-theme="light"] .theme-icon {
 	color: var(--primary);
 }
 
+
 .nav-links {
 	display: flex;
 	gap: clamp(6px, 0.65vw, 12px);
@@ -221,6 +222,97 @@ html[data-theme="light"] .theme-icon {
 	align-items: center;
 	justify-content: flex-end;
 	margin-left: auto;
+	transition: max-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menu-toggle {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 8px;
+	margin-left: 12px;
+	z-index: 30;
+}
+
+.hamburger {
+	display: block;
+	width: 28px;
+	height: 3px;
+	background: var(--text);
+	border-radius: 2px;
+	position: relative;
+	transition: background 0.3s;
+}
+.hamburger::before,
+.hamburger::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	width: 28px;
+	height: 3px;
+	background: var(--text);
+	border-radius: 2px;
+	transition: transform 0.3s, top 0.3s, bottom 0.3s;
+}
+.hamburger::before {
+	top: -9px;
+}
+.hamburger::after {
+	bottom: -9px;
+}
+.menu-toggle.active .hamburger {
+	background: transparent;
+}
+.menu-toggle.active .hamburger::before {
+	transform: translateY(9px) rotate(45deg);
+}
+.menu-toggle.active .hamburger::after {
+	transform: translateY(-9px) rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+	.menu-toggle {
+		display: inline-flex;
+	}
+	.nav-links {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		left: 0;
+		background: rgba(7, 11, 18, 0.97);
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0;
+		padding: 18px 0 12px 0;
+		max-height: 0;
+		overflow: hidden;
+		box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+		border-radius: 0 0 18px 18px;
+		margin-left: 0;
+		z-index: 22;
+		transition: max-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.nav-links.open {
+		max-height: 500px;
+		border-top: 1px solid rgba(255,255,255,0.08);
+	}
+	.nav-links a, .nav-links .theme-btn {
+		width: 100%;
+		padding: 14px 24px;
+		font-size: 1.1rem;
+		border-radius: 0;
+		text-align: left;
+		border: none;
+		color: var(--text);
+		background: none;
+		margin: 0;
+		transition: background 0.2s;
+	}
+	.nav-links a:hover {
+		background: rgba(39, 210, 111, 0.08);
+		color: var(--primary);
+	}
 }
 
 .nav-links .theme-btn {

@@ -1,4 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+	// Menu mobile toggle
+	var menuToggle = document.getElementById("menu-toggle");
+	var navMobile = document.getElementById("nav-mobile");
+	if (menuToggle && navMobile) {
+		menuToggle.addEventListener("click", function () {
+			var expanded = menuToggle.getAttribute("aria-expanded") === "true";
+			menuToggle.setAttribute("aria-expanded", !expanded);
+			menuToggle.classList.toggle("active");
+			navMobile.classList.toggle("open");
+		});
+		// Fecha o menu ao clicar em um link
+		navMobile.querySelectorAll("a").forEach(function(link) {
+			link.addEventListener("click", function() {
+				menuToggle.setAttribute("aria-expanded", "false");
+				menuToggle.classList.remove("active");
+				navMobile.classList.remove("open");
+			});
+		});
+	}
+
+	// Tema (original)
 	var THEME_STORAGE_KEY = "preferred-theme";
 	var currentTheme = "dark";
 	var themeButton = document.getElementById("theme-toggle");
@@ -11,28 +32,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (!["dark", "light"].includes(theme)) {
 			return;
 		}
-
 		currentTheme = theme;
 		document.documentElement.setAttribute("data-theme", theme);
-
 		if (themeColorMeta) {
 			themeColorMeta.setAttribute("content", theme === "dark" ? "#0d1422" : "#edf3ff");
 		}
-
 		updateThemeButtonLabel();
-
 		try {
 			window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-		} catch (error) {
-			// Ignora falha de escrita em storage restrito.
-		}
+		} catch (error) {}
 	}
 
 	function updateThemeButtonLabel() {
 		if (!themeButton || !themeIcon) {
 			return;
 		}
-
 		var nextTheme = currentTheme === "dark" ? "light" : "dark";
 		themeIcon.innerHTML = nextTheme === "light" ? ICON_SUN : ICON_MOON;
 		themeIcon.classList.toggle("is-sun", nextTheme === "light");
@@ -56,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	} catch (error) {
 		currentTheme = "dark";
 	}
-
 	applyTheme(currentTheme);
 
 	var navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
